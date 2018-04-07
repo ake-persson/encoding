@@ -22,3 +22,10 @@ func NewEncoder(driver string, options ...func(Driver) error) (Encoder, error) {
 
 	return d.Encoder(), nil
 }
+
+// Indent output.
+func Indent(indent string) func(Driver) error {
+	return func(d Driver) error {
+		return d.SetIndent(indent)
+	}
+}
