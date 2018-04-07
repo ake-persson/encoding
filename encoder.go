@@ -20,7 +20,7 @@ func NewEncoder(driver string, options ...func(Driver) error) (Encoder, error) {
 		}
 	}
 
-	return d.Encoder(), nil
+	return d.Encoder()
 }
 
 // Indent output.

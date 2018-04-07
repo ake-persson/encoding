@@ -20,5 +20,5 @@ func NewDecoder(driver string, options ...func(Driver) error) (Decoder, error) {
 		}
 	}
 
-	return d.Decoder(), nil
+	return d.Decoder()
 }
