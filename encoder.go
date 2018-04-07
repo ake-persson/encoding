@@ -4,7 +4,7 @@ import "fmt"
 
 // Encoder interface.
 type Encoder interface {
-	Encode(value interface{}) []byte
+	Encode(value interface{}) ([]byte, error)
 }
 
 // NewEncoder constructor.

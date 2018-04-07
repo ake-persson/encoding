@@ -1,24 +1,27 @@
 package json
 
 import (
+	"encoding/json"
+
 	"github.com/mickep76/encdec"
 )
 
 type driver struct {
-	indent string
+	encoder json.Encoder
+	decoder json.Decoder
 }
 
 func (d *driver) SetIndent(indent string) error {
-	d.indent = indent
+	d.encoder.SetIndent("", indent)
 	return nil
 }
 
 func (d *driver) Encoder() (encdec.Encoder, error) {
-	return &encoder{}, nil
+	return &encoder{&d.encoder}, nil
 }
 
 func (d *driver) Decoder() (encdec.Decoder, error) {
-	return &decoder{}, nil
+	return &decoder{&d.decoder}, nil
 }
 
 func init() {
