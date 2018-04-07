@@ -14,11 +14,7 @@ func NewDecoder(codec string, reader io.Reader, options ...func(Decoder) error) 
 		return nil, ErrUnknownCodec
 	}
 
-	dec, err := c.NewDecoder(reader)
-	if err != nil {
-		return nil, err
-	}
-
+	dec := c.NewDecoder(reader)
 	for _, option := range options {
 		if err := option(dec); err != nil {
 			return nil, err

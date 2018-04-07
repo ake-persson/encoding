@@ -15,11 +15,7 @@ func NewEncoder(codec string, writer io.Writer, options ...func(Encoder) error) 
 		return nil, ErrUnknownCodec
 	}
 
-	enc, err := c.NewEncoder(writer)
-	if err != nil {
-		return nil, err
-	}
-
+	enc := c.NewEncoder(writer)
 	for _, option := range options {
 		if err := option(enc); err != nil {
 			return nil, err

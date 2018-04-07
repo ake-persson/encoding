@@ -6,8 +6,8 @@ var codecs = make(map[string]Codec)
 
 // Codec interface.
 type Codec interface {
-	NewEncoder(writer io.Writer) (Encoder, error)
-	NewDecoder(reader io.Reader) (Decoder, error)
+	NewEncoder(writer io.Writer) Encoder
+	NewDecoder(reader io.Reader) Decoder
 }
 
 // Register codec.
