@@ -1,13 +1,12 @@
-package json
+package bson
 
-import "encoding/json"
+import "github.com/pkg/bson"
 
 type encoder struct {
-	encoder *json.Encoder
+	encoder *bson.Encoder
 }
 
 func (e *encoder) SetIndent(indent string) {
-	e.encoder.SetIndent("", indent)
 }
 
 func (e *encoder) Encode(value interface{}) error {

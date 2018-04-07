@@ -1,9 +1,9 @@
-package json
+package bson
 
-import "encoding/json"
+import "github.com/pkg/bson"
 
 type decoder struct {
-	decoder *json.Decoder
+	decoder *bson.Decoder
 }
 
 func (d *decoder) Decode(value interface{}) error {
