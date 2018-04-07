@@ -5,9 +5,9 @@ import (
 )
 
 type decoder struct {
-	*json.Decoder
+	decoder *json.Decoder
 }
 
 func (d *decoder) Decode(value interface{}) error {
-	return d.Decode(value)
+	return d.decoder.Decode(value)
 }
