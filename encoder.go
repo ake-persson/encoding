@@ -20,7 +20,7 @@ func NewEncoder(codec string, writer io.Writer, options ...func(Codec) error) (E
 		}
 	}
 
-	return c.Encoder()
+	return c.Encoder(writer)
 }
 
 // Indent output.

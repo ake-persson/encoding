@@ -20,5 +20,5 @@ func NewDecoder(codec string, reader io.Reader, options ...func(Codec) error) (D
 		}
 	}
 
-	return c.Decoder()
+	return c.Decoder(reader)
 }
