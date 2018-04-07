@@ -1,11 +1,15 @@
 package json
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"io"
+)
 
 type encoder struct {
-	*json.Encoder
+	writer  io.Writer
+	encoder *json.Encoder
 }
 
-func (e *encoder) Encode(value interface{}) ([]byte, error) {
-	return []byte(""), nil
+func (e *encoder) Encode(value interface{}) error {
+	return nil
 }

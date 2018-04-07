@@ -1,14 +1,17 @@
 package encdec
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+)
 
 // Encoder interface.
 type Encoder interface {
-	Encode(value interface{}) ([]byte, error)
+	Encode(value interface{}) error
 }
 
 // NewEncoder constructor.
-func NewEncoder(driver string, options ...func(Driver) error) (Encoder, error) {
+func NewEncoder(driver string, writer io.Writer, options ...func(Driver) error) (Encoder, error) {
 	d, ok := drivers[driver]
 	if !ok {
 		return nil, fmt.Errorf("driver is not registered: %s", driver)

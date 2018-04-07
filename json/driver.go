@@ -17,11 +17,11 @@ func (d *driver) SetIndent(indent string) error {
 }
 
 func (d *driver) Encoder() (encdec.Encoder, error) {
-	return &encoder{&d.encoder}, nil
+	return &encoder{encoder: &d.encoder}, nil
 }
 
 func (d *driver) Decoder() (encdec.Decoder, error) {
-	return &decoder{&d.decoder}, nil
+	return &decoder{decoder: &d.decoder}, nil
 }
 
 func init() {
