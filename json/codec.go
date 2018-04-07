@@ -9,18 +9,13 @@ import (
 
 type codec struct{}
 
-func (c *codec) SetIndent(indent string) error {
-	//	c.encoder.SetIndent("", indent)
-	return nil
-}
-
-func (c *codec) Encoder(writer io.Writer) (encdec.Encoder, error) {
+func (c *codec) NewEncoder(writer io.Writer) (encdec.Encoder, error) {
 	return &encoder{
 		json.NewEncoder(writer),
 	}, nil
 }
 
-func (c *codec) Decoder(reader io.Reader) (encdec.Decoder, error) {
+func (c *codec) NewDecoder(reader io.Reader) (encdec.Decoder, error) {
 	return &decoder{
 		json.NewDecoder(reader),
 	}, nil

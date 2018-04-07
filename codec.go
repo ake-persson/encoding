@@ -6,9 +6,8 @@ var codecs = make(map[string]Codec)
 
 // Codec interface.
 type Codec interface {
-	SetIndent(indent string) error
-	Encoder(writer io.Writer) (Encoder, error)
-	Decoder(reader io.Reader) (Decoder, error)
+	NewEncoder(writer io.Writer) (Encoder, error)
+	NewDecoder(reader io.Reader) (Decoder, error)
 }
 
 // Register codec.
