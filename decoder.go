@@ -1,9 +1,6 @@
 package encdec
 
-import (
-	"fmt"
-	"io"
-)
+import "io"
 
 // Decoder interface.
 type Decoder interface {
@@ -11,17 +8,17 @@ type Decoder interface {
 }
 
 // Decoder constructor.
-func NewDecoder(driver string, reader io.Reader, options ...func(Driver) error) (Decoder, error) {
-	d, ok := drivers[driver]
+func NewDecoder(codec string, reader io.Reader, options ...func(Codec) error) (Decoder, error) {
+	c, ok := codecs[codec]
 	if !ok {
-		return nil, fmt.Errorf("driver is not registered: %s", driver)
+		return nil, ErrUnknownCodec
 	}
 
 	for _, option := range options {
-		if err := option(d); err != nil {
+		if err := option(c); err != nil {
 			return nil, err
 		}
 	}
 
-	return d.Decoder()
+	return c.Decoder()
 }
