@@ -1,6 +1,11 @@
 package encdec
 
-import "io"
+import (
+	"bufio"
+	"bytes"
+	"io"
+	"os"
+)
 
 // Decoder interface.
 type Decoder interface {
@@ -24,12 +29,38 @@ func NewDecoder(codec string, reader io.Reader, options ...func(Decoder) error) 
 	return dec, nil
 }
 
-// FromByte method.
-func FromByte(codec string, encoded []byte, value interface{}, options ...func(Encoder) error) error {
+// FromBytes method.
+func FromBytes(codec string, encoded []byte, value interface{}, options ...func(Encoder) error) error {
+	r := bufio.NewReader(bytes.NewReader(encoded))
+	dec, err := NewDecoder(codec, r)
+	if err != nil {
+		return err
+	}
+
+	if err := dec.Decode(value); err != nil {
+		return err
+	}
+
 	return nil
 }
 
 // FromFile method.
 func FromFile(codec string, file string, value interface{}, options ...func(Encoder) error) error {
+	fp, err := os.Open(file)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	r := bufio.NewReader(fp)
+	dec, err := NewDecoder(codec, r)
+	if err != nil {
+		return err
+	}
+
+	if err := dec.Decode(value); err != nil {
+		return err
+	}
+
 	return nil
 }

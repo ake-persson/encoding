@@ -1,6 +1,10 @@
 package encdec
 
-import "io"
+import (
+	"bufio"
+	"io"
+	"os"
+)
 
 // Encoder interface.
 type Encoder interface {
@@ -33,11 +37,26 @@ func Indent(indent string) func(Encoder) error {
 }
 
 // ToByte method.
-func ToByte(codec string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
+func ToBytes(codec string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
 	return nil, nil
 }
 
 // ToFile method.
 func ToFile(codec string, file string, value interface{}, options ...func(Encoder) error) error {
+	fp, err := os.Create(file)
+	if err != nil {
+		return err
+	}
+
+	w := bufio.NewWriter(fp)
+	enc, err := NewEncoder(codec, w)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	enc.Encode(value)
+	w.Flush()
+
 	return nil
 }
