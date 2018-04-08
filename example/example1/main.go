@@ -10,19 +10,20 @@ import (
 	_ "github.com/mickep76/encdec/json"
 )
 
+type Message struct {
+	Name, Text string
+}
+
 func main() {
-	const data = `
+	const msgs = `
 	{"Name": "Ed", "Text": "Knock knock."}
 	{"Name": "Sam", "Text": "Who's there?"}
 	{"Name": "Ed", "Text": "Go fmt."}
 	{"Name": "Sam", "Text": "Go fmt who?"}
 	{"Name": "Ed", "Text": "Go fmt yourself!"}
 `
-	type Message struct {
-		Name, Text string
-	}
 
-	dec, err := encdec.NewDecoder("json", strings.NewReader(data))
+	dec, err := encdec.NewDecoder("json", strings.NewReader(msgs))
 	if err != nil {
 		log.Fatal(err)
 	}
