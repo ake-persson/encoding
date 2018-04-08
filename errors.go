@@ -3,6 +3,6 @@ package encdec
 import "errors"
 
 var (
-	ErrNotSupported = errors.New("method is not supported by codec")
-	ErrUnknownCodec = errors.New("unknown codec")
+	ErrNotSupported = errors.New("method is not supported by encoding")
+	ErrUnknownEncoding = errors.New("unknown encoding")
 )

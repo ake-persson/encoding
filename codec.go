@@ -2,15 +2,15 @@ package encdec
 
 import "io"
 
-var codecs = make(map[string]Codec)
+var encodings = make(map[string]Encoding)
 
-// Codec interface.
-type Codec interface {
+// Encoding interface.
+type Encoding interface {
 	NewEncoder(writer io.Writer) Encoder
 	NewDecoder(reader io.Reader) Decoder
 }
 
-// Register codec.
-func Register(name string, codec Codec) {
-	codecs[name] = codec
+// Register encoding.
+func Register(name string, encoding Encoding) {
+	encodings[name] = encoding
 }

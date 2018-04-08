@@ -14,10 +14,10 @@ type Encoder interface {
 }
 
 // NewEncoder constructor.
-func NewEncoder(codec string, writer io.Writer, options ...func(Encoder) error) (Encoder, error) {
-	c, ok := codecs[codec]
+func NewEncoder(encoding string, writer io.Writer, options ...func(Encoder) error) (Encoder, error) {
+	c, ok := encodings[encoding]
 	if !ok {
-		return nil, ErrUnknownCodec
+		return nil, ErrUnknownEncoding
 	}
 
 	enc := c.NewEncoder(writer)
@@ -38,10 +38,10 @@ func WithIndent(indent string) func(Encoder) error {
 }
 
 // ToByte method.
-func ToBytes(codec string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
+func ToBytes(encoding string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
 	var buf bytes.Buffer
 
-	enc, err := NewEncoder(codec, &buf)
+	enc, err := NewEncoder(encoding, &buf)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func ToBytes(codec string, value interface{}, options ...func(Encoder) error) ([
 }
 
 // ToFile method.
-func ToFile(codec string, file string, value interface{}, options ...func(Encoder) error) error {
+func ToFile(encoding string, file string, value interface{}, options ...func(Encoder) error) error {
 	fp, err := os.Create(file)
 	if err != nil {
 		return err
@@ -60,7 +60,7 @@ func ToFile(codec string, file string, value interface{}, options ...func(Encode
 	defer fp.Close()
 
 	w := bufio.NewWriter(fp)
-	enc, err := NewEncoder(codec, w)
+	enc, err := NewEncoder(encoding, w)
 	if err != nil {
 		return err
 	}

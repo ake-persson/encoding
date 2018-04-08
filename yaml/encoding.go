@@ -8,16 +8,16 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type codec struct{}
+type encoding struct{}
 
-func (c *codec) NewEncoder(writer io.Writer) encdec.Encoder {
+func (c *encoding) NewEncoder(writer io.Writer) encdec.Encoder {
 	return &encoder{encoder: yaml.NewEncoder(writer)}
 }
 
-func (c *codec) NewDecoder(reader io.Reader) encdec.Decoder {
+func (c *encoding) NewDecoder(reader io.Reader) encdec.Decoder {
 	return &decoder{decoder: yaml.NewDecoder(reader)}
 }
 
 func init() {
-	encdec.Register("yaml", &codec{})
+	encdec.Register("yaml", &encoding{})
 }

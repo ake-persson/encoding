@@ -16,7 +16,7 @@ type Message struct {
 
 type Messages []*Message
 
-func EncToFile(fn string, codec string, v interface{}) error {
+func EncToFile(fn string, encoding string, v interface{}) error {
 	fp, err := os.Create(fn)
 	if err != nil {
 		return err
@@ -24,7 +24,7 @@ func EncToFile(fn string, codec string, v interface{}) error {
 	defer fp.Close()
 
 	w := bufio.NewWriter(fp)
-	enc, err := encdec.NewEncoder(codec, w)
+	enc, err := encdec.NewEncoder(encoding, w)
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ func EncToFile(fn string, codec string, v interface{}) error {
 	return nil
 }
 
-func DecFromFile(fn string, codec string, v interface{}) error {
+func DecFromFile(fn string, encoding string, v interface{}) error {
 	fp, err := os.Open(fn)
 	if err != nil {
 		return err
@@ -43,7 +43,7 @@ func DecFromFile(fn string, codec string, v interface{}) error {
 	defer fp.Close()
 
 	r := bufio.NewReader(fp)
-	dec, err := encdec.NewDecoder(codec, r)
+	dec, err := encdec.NewDecoder(encoding, r)
 	if err != nil {
 		return err
 	}

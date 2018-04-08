@@ -13,10 +13,10 @@ type Decoder interface {
 }
 
 // Decoder constructor.
-func NewDecoder(codec string, reader io.Reader, options ...func(Decoder) error) (Decoder, error) {
-	c, ok := codecs[codec]
+func NewDecoder(encoding string, reader io.Reader, options ...func(Decoder) error) (Decoder, error) {
+	c, ok := encodings[encoding]
 	if !ok {
-		return nil, ErrUnknownCodec
+		return nil, ErrUnknownEncoding
 	}
 
 	dec := c.NewDecoder(reader)
@@ -30,9 +30,9 @@ func NewDecoder(codec string, reader io.Reader, options ...func(Decoder) error) 
 }
 
 // FromBytes method.
-func FromBytes(codec string, encoded []byte, value interface{}, options ...func(Encoder) error) error {
+func FromBytes(encoding string, encoded []byte, value interface{}, options ...func(Encoder) error) error {
 	r := bufio.NewReader(bytes.NewReader(encoded))
-	dec, err := NewDecoder(codec, r)
+	dec, err := NewDecoder(encoding, r)
 	if err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func FromBytes(codec string, encoded []byte, value interface{}, options ...func(
 }
 
 // FromFile method.
-func FromFile(codec string, file string, value interface{}, options ...func(Encoder) error) error {
+func FromFile(encoding string, file string, value interface{}, options ...func(Encoder) error) error {
 	fp, err := os.Open(file)
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func FromFile(codec string, file string, value interface{}, options ...func(Enco
 	defer fp.Close()
 
 	r := bufio.NewReader(fp)
-	dec, err := NewDecoder(codec, r)
+	dec, err := NewDecoder(encoding, r)
 	if err != nil {
 		return err
 	}
