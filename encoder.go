@@ -25,9 +25,19 @@ func NewEncoder(codec string, writer io.Writer, options ...func(Encoder) error) 
 	return enc, nil
 }
 
-// Indent output.
+// Indent output setter.
 func Indent(indent string) func(Encoder) error {
 	return func(e Encoder) error {
 		return e.SetIndent(indent)
 	}
+}
+
+// ToByte method.
+func ToByte(codec string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
+	return nil, nil
+}
+
+// ToFile method.
+func ToFile(codec string, file string, value interface{}, options ...func(Encoder) error) error {
+	return nil
 }

@@ -23,3 +23,13 @@ func NewDecoder(codec string, reader io.Reader, options ...func(Decoder) error) 
 
 	return dec, nil
 }
+
+// FromByte method.
+func FromByte(codec string, encoded []byte, value interface{}, options ...func(Encoder) error) error {
+	return nil
+}
+
+// FromFile method.
+func FromFile(codec string, file string, value interface{}, options ...func(Encoder) error) error {
+	return nil
+}
