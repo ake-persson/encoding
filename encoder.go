@@ -29,8 +29,8 @@ func NewEncoder(codec string, writer io.Writer, options ...func(Encoder) error) 
 	return enc, nil
 }
 
-// Indent output setter.
-func Indent(indent string) func(Encoder) error {
+// WithIndent output setter.
+func WithIndent(indent string) func(Encoder) error {
 	return func(e Encoder) error {
 		return e.SetIndent(indent)
 	}
