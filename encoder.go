@@ -2,6 +2,7 @@ package encdec
 
 import (
 	"bufio"
+	"bytes"
 	"io"
 	"os"
 )
@@ -38,7 +39,16 @@ func WithIndent(indent string) func(Encoder) error {
 
 // ToByte method.
 func ToBytes(codec string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
-	return nil, nil
+	var buf bytes.Buffer
+
+	enc, err := NewEncoder(codec, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	enc.Encode(value)
+
+	return buf.Bytes(), nil
 }
 
 // ToFile method.
@@ -47,13 +57,13 @@ func ToFile(codec string, file string, value interface{}, options ...func(Encode
 	if err != nil {
 		return err
 	}
+	defer fp.Close()
 
 	w := bufio.NewWriter(fp)
 	enc, err := NewEncoder(codec, w)
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	enc.Encode(value)
 	w.Flush()

@@ -21,13 +21,13 @@ func EncToFile(fn string, codec string, v interface{}) error {
 	if err != nil {
 		return err
 	}
+	defer fp.Close()
 
 	w := bufio.NewWriter(fp)
 	enc, err := encdec.NewEncoder(codec, w)
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	enc.Encode(v)
 	w.Flush()
