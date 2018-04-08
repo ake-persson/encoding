@@ -30,8 +30,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for _, msg := range msgs {
-		enc.Encode(msg)
+	for _, m := range msgs {
+		enc.Encode(m)
 	}
 	w.Flush()
 }
