@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/mickep76/encdec"
-	_ "github.com/mickep76/encdec/json"
+	_ "github.com/mickep76/encdec/yaml"
 )
 
 type Message struct {
@@ -23,13 +23,13 @@ func main() {
 		&Message{Name: "Ed", Text: "Go fmt yourself!"},
 	}
 
-	b, err := encdec.ToBytes("json", in)
+	b, err := encdec.ToBytes("yaml", in)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	out := Messages{}
-	if err := encdec.FromBytes("json", b, &out); err != nil {
+	if err := encdec.FromBytes("yaml", b, &out); err != nil {
 		log.Fatal(err)
 	}
 
