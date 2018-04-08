@@ -1,9 +1,9 @@
-package bson
+package toml
 
 import (
 	"io"
 
-	"github.com/pkg/bson"
+	"github.com/pelletier/go-toml"
 
 	"github.com/mickep76/encdec"
 )
@@ -11,13 +11,13 @@ import (
 type encoding struct{}
 
 func (c *encoding) NewEncoder(writer io.Writer) encdec.Encoder {
-	return &encoder{encoder: bson.NewEncoder(writer)}
+	return &encoder{encoder: toml.NewEncoder(writer)}
 }
 
 func (c *encoding) NewDecoder(reader io.Reader) encdec.Decoder {
-	return &decoder{decoder: bson.NewDecoder(reader)}
+	return &decoder{decoder: toml.NewDecoder(reader)}
 }
 
 func init() {
-	encdec.Register("bson", &encoding{})
+	encdec.Register("toml", &encoding{})
 }
