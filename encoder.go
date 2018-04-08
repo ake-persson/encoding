@@ -4,7 +4,7 @@ import "io"
 
 // Encoder interface.
 type Encoder interface {
-	SetIndent(indent string)
+	SetIndent(indent string) error
 	Encode(value interface{}) error
 }
 
@@ -28,7 +28,6 @@ func NewEncoder(codec string, writer io.Writer, options ...func(Encoder) error) 
 // Indent output.
 func Indent(indent string) func(Encoder) error {
 	return func(e Encoder) error {
-		e.SetIndent(indent)
-		return nil
+		return e.SetIndent(indent)
 	}
 }
