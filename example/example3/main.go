@@ -2,11 +2,12 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/mickep76/encdec"
-	_ "github.com/mickep76/encdec/bson"
+	_ "github.com/mickep76/encdec/json"
 )
 
 type Message struct {
@@ -15,8 +16,47 @@ type Message struct {
 
 type Messages []*Message
 
+func EncToFile(fn string, codec string, v interface{}) error {
+	fp, err := os.Create(fn)
+	if err != nil {
+		return err
+	}
+
+	w := bufio.NewWriter(fp)
+	enc, err := encdec.NewEncoder(codec, w)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	enc.Encode(v)
+	w.Flush()
+
+	return nil
+}
+
+func DecFromFile(fn string, codec string, v interface{}) error {
+	fp, err := os.Open(fn)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	r := bufio.NewReader(fp)
+	dec, err := encdec.NewDecoder(codec, r)
+	if err != nil {
+		return err
+	}
+
+	if err := dec.Decode(v); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func main() {
-	msgs := Messages{
+	in := Messages{
 		&Message{Name: "Ed", Text: "Knock knock."},
 		&Message{Name: "Sam", Text: "Who's there?"},
 		&Message{Name: "Ed", Text: "Go fmt."},
@@ -24,19 +64,16 @@ func main() {
 		&Message{Name: "Ed", Text: "Go fmt yourself!"},
 	}
 
-	fp, err := os.Create("example3.bson")
-	if err != nil {
+	if err := EncToFile("example3.json", "json", in); err != nil {
 		log.Fatal(err)
 	}
 
-	w := bufio.NewWriter(fp)
-	enc, err := encdec.NewEncoder("bson", w)
-	if err != nil {
+	out := Messages{}
+	if err := DecFromFile("example3.json", "json", &out); err != nil {
 		log.Fatal(err)
 	}
 
-	for _, msg := range msgs {
-		enc.Encode(msg)
+	for _, m := range out {
+		fmt.Printf("%s: %s\n", m.Name, m.Text)
 	}
-	w.Flush()
 }
