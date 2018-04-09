@@ -16,7 +16,7 @@ type Decoder interface {
 func NewDecoder(encoding string, reader io.Reader, options ...func(Decoder) error) (Decoder, error) {
 	c, ok := encodings[encoding]
 	if !ok {
-		return nil, ErrUnknownEncoding
+		return nil, ErrNotRegistered
 	}
 
 	dec := c.NewDecoder(reader)

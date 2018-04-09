@@ -17,7 +17,7 @@ type Encoder interface {
 func NewEncoder(encoding string, writer io.Writer, options ...func(Encoder) error) (Encoder, error) {
 	c, ok := encodings[encoding]
 	if !ok {
-		return nil, ErrUnknownEncoding
+		return nil, ErrNotRegistered
 	}
 
 	enc := c.NewEncoder(writer)

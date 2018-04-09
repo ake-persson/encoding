@@ -14,3 +14,11 @@ type Encoding interface {
 func Register(name string, encoding Encoding) {
 	encodings[name] = encoding
 }
+
+func Registered(name string) error {
+	_, ok := encodings[name]
+	if !ok {
+		return ErrNotRegistered
+	}
+	return nil
+}
