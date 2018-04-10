@@ -1,4 +1,7 @@
 test:
   abc:
     myTest: Test2
+  myList:
+  - Item 1
+  - Item 2
   myTest: Test

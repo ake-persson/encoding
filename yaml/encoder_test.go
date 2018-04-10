@@ -12,6 +12,9 @@ var (
 	testYAML = `test:
   abc:
     myTest: Test2
+  myList:
+  - Item 1
+  - Item 2
   myTest: Test
 `
 
@@ -21,6 +24,10 @@ var (
 			"abc": map[string]interface{}{
 				"myTest": "Test2",
 			},
+			"myList": []interface{}{
+				"Item 1",
+				"Item 2",
+			},
 		},
 	}
 
@@ -29,6 +36,10 @@ var (
 			"myTest": "Test",
 			"abc": map[interface{}]interface{}{
 				"myTest": "Test2",
+			},
+			"myList": []interface{}{
+				"Item 1",
+				"Item 2",
 			},
 		},
 	}
