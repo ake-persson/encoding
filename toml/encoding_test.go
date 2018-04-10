@@ -1,4 +1,4 @@
-package json
+package toml
 
 import (
 	"fmt"
@@ -19,11 +19,11 @@ func inList(a string, list []string) bool {
 func TestEncodings(t *testing.T) {
 	encs := encdec.Encodings()
 
-	if !inList("json", encs) {
+	if !inList("toml", encs) {
 		t.Error(fmt.Errorf("encoding not in list"))
 	}
 
-	if err := encdec.Registered("json"); err != nil {
+	if err := encdec.Registered("toml"); err != nil {
 		t.Error(err)
 	}
 }

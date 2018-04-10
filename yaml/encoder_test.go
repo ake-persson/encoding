@@ -24,6 +24,15 @@ var (
 		},
 	}
 
+	testMapInterface = map[interface{}]interface{}{
+		"test": map[interface{}]interface{}{
+			"myTest": "Test",
+			"abc": map[interface{}]interface{}{
+				"myTest": "Test2",
+			},
+		},
+	}
+
 	tmpFile = "test.tmp"
 )
 

@@ -9,7 +9,15 @@ import (
 
 // Decoder interface.
 type Decoder interface {
+	SetMapString() error
 	Decode(value interface{}) error
+}
+
+// WithMapString convert map[interface{}]interface{} to map[string]interface{} for YAML.
+func WithMapString() func(Decoder) error {
+	return func(d Decoder) error {
+		return d.SetMapString()
+	}
 }
 
 // NewDecoder constructor.
