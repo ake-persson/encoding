@@ -10,7 +10,7 @@ Package provides a generic interface to encoders and decoders
 
 ## Example
 
-More examples can be found in [examples/](https://github.com/mickep76/encdec/tree/master/examples).
+More examples can be found in [examples](https://github.com/mickep76/encdec/tree/master/examples).
 
 ```go
 package main
