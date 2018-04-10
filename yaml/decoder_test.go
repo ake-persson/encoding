@@ -30,6 +30,17 @@ func TestFromByteWithMapString(t *testing.T) {
 	}
 }
 
+func TestFromByteWithMapStringError(t *testing.T) {
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("The code did not panic")
+		}
+	}()
+
+	g := ""
+	encdec.FromBytes("yaml", []byte(testYAML), g, encdec.WithMapString())
+}
+
 func TestFromFile(t *testing.T) {
 	var g interface{}
 	if err := encdec.FromFile("yaml", "test.yaml", &g); err != nil {
