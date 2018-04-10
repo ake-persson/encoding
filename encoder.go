@@ -41,7 +41,7 @@ func WithIndent(indent string) func(Encoder) error {
 func ToBytes(encoding string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
 	var buf bytes.Buffer
 
-	enc, err := NewEncoder(encoding, &buf)
+	enc, err := NewEncoder(encoding, &buf, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func ToFile(encoding string, file string, value interface{}, options ...func(Enc
 	}
 
 	w := bufio.NewWriter(fp)
-	enc, err := NewEncoder(encoding, w)
+	enc, err := NewEncoder(encoding, w, options...)
 	if err != nil {
 		return err
 	}

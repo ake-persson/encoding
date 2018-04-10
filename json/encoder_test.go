@@ -40,3 +40,14 @@ func TestToByte(t *testing.T) {
 		t.Errorf("want:\n%s, got:\n%s", testJSON, string(b))
 	}
 }
+
+func TestToByteWithIndent(t *testing.T) {
+	b, err := encdec.ToBytes("json", &testMap, encdec.WithIndent("  "))
+	if err != nil {
+		t.Error(err)
+	}
+
+	if string(b) != testJSONIndent {
+		t.Errorf("want:\n%s, got:\n%s", testJSONIndent, string(b))
+	}
+}
