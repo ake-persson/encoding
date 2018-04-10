@@ -65,6 +65,13 @@ func TestToByte(t *testing.T) {
 	}
 }
 
+func TestToByteWithIndent(t *testing.T) {
+	_, err := encdec.ToBytes("yaml", testMap, encdec.WithIndent(""))
+	if err != encdec.ErrNotSupported {
+		t.Error(err)
+	}
+}
+
 func TestToFile(t *testing.T) {
 	if err := encdec.ToFile("yaml", tmpFile, testMap); err != nil {
 		t.Error(err)
