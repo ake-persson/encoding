@@ -30,9 +30,9 @@ func NewDecoder(encoding string, reader io.Reader, options ...func(Decoder) erro
 }
 
 // FromBytes method.
-func FromBytes(encoding string, encoded []byte, value interface{}, options ...func(Encoder) error) error {
+func FromBytes(encoding string, encoded []byte, value interface{}, options ...func(Decoder) error) error {
 	r := bufio.NewReader(bytes.NewReader(encoded))
-	dec, err := NewDecoder(encoding, r)
+	dec, err := NewDecoder(encoding, r, options...)
 	if err != nil {
 		return err
 	}
@@ -41,14 +41,14 @@ func FromBytes(encoding string, encoded []byte, value interface{}, options ...fu
 }
 
 // FromFile method.
-func FromFile(encoding string, file string, value interface{}, options ...func(Encoder) error) error {
+func FromFile(encoding string, file string, value interface{}, options ...func(Decoder) error) error {
 	fp, err := os.Open(file)
 	if err != nil {
 		return err
 	}
 
 	r := bufio.NewReader(fp)
-	dec, err := NewDecoder(encoding, r)
+	dec, err := NewDecoder(encoding, r, options...)
 	if err != nil {
 		return err
 	}
