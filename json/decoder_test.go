@@ -18,6 +18,13 @@ func TestFromByte(t *testing.T) {
 	}
 }
 
+func TestFromByteWithMapString(t *testing.T) {
+	var g interface{}
+	if err := encdec.FromBytes("json", []byte(testJSON), &g, encdec.WithMapString()); err != encdec.ErrNotSupported {
+		t.Error(err)
+	}
+}
+
 func TestFromFile(t *testing.T) {
 	var g interface{}
 	if err := encdec.FromFile("json", "test.json", &g); err != nil {
