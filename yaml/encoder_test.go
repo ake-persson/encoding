@@ -12,6 +12,7 @@ var (
 	testYAML = `test:
   abc:
     myTest: Test2
+  myInt: 1
   myList:
   - Item 1
   - Item 2
@@ -28,6 +29,7 @@ var (
 				"Item 1",
 				"Item 2",
 			},
+			"myInt": 1,
 		},
 	}
 
@@ -41,6 +43,7 @@ var (
 				"Item 1",
 				"Item 2",
 			},
+			"myInt": 1,
 		},
 	}
 

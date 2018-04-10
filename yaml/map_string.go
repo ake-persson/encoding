@@ -31,9 +31,7 @@ func cleanupMapValue(v interface{}) interface{} {
 		return cleanupInterfaceArray(v)
 	case map[interface{}]interface{}:
 		return cleanupInterfaceMap(v)
-	case string:
-		return v
 	default:
-		return fmt.Sprintf("%v", v)
+		return v
 	}
 }
