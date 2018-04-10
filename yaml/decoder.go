@@ -20,11 +20,8 @@ func (d *decoder) Decode(value interface{}) error {
 		}
 
 		*value.(*interface{}) = cleanupMapValue(res)
-	} else {
-		if err := d.decoder.Decode(value); err != nil {
-			return err
-		}
+		return nil
 	}
 
-	return nil
+	return d.decoder.Decode(value)
 }
