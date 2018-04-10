@@ -1,6 +1,7 @@
 package yaml
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/go-test/deep"
@@ -38,7 +39,9 @@ func TestFromByteWithMapStringError(t *testing.T) {
 	}()
 
 	g := ""
-	encdec.FromBytes("yaml", []byte(testYAML), g, encdec.WithMapString())
+	if err := encdec.FromBytes("yaml", []byte(testYAML), g, encdec.WithMapString()); err != nil {
+		t.Error(fmt.Errorf("expected a panic! %v", err))
+	}
 }
 
 func TestFromFile(t *testing.T) {
