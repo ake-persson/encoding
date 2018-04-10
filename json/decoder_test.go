@@ -1,8 +1,9 @@
 package json
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/go-test/deep"
 
 	"github.com/mickep76/encdec"
 )
@@ -13,8 +14,8 @@ func TestFromByte(t *testing.T) {
 		t.Error(err)
 	}
 
-	if !reflect.DeepEqual(g, testMap) {
-		t.Errorf("want:\n%+v, got:\n%+v", testMap, g)
+	if err := deep.Equal(g, testMap); err != nil {
+		t.Error(err)
 	}
 }
 
@@ -31,7 +32,7 @@ func TestFromFile(t *testing.T) {
 		t.Error(err)
 	}
 
-	if !reflect.DeepEqual(g, testMap) {
-		t.Errorf("want:\n%+v, got:\n%+v", testMap, g)
+	if err := deep.Equal(g, testMap); err != nil {
+		t.Error(err)
 	}
 }
