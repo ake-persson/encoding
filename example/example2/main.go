@@ -31,7 +31,11 @@ func main() {
 	}
 
 	for _, m := range msgs {
-		enc.Encode(m)
+		if err := enc.Encode(m); err != nil {
+			log.Fatal(err)
+		}
 	}
-	w.Flush()
+	if err := w.Flush(); err != nil {
+		log.Fatal(err)
+	}
 }

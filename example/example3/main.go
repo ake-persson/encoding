@@ -23,7 +23,6 @@ func EncToFile(fn string, encoding string, v interface{}) error {
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	w := bufio.NewWriter(fp)
 	enc, err := encdec.NewEncoder(encoding, w)
@@ -31,8 +30,17 @@ func EncToFile(fn string, encoding string, v interface{}) error {
 		return err
 	}
 
-	enc.Encode(v)
-	w.Flush()
+	if err := enc.Encode(v); err != nil {
+		return err
+	}
+
+	if err := w.Flush(); err != nil {
+		return err
+	}
+
+	if err := fp.Close(); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -42,7 +50,6 @@ func DecFromFile(fn string, encoding string, v interface{}) error {
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	r := bufio.NewReader(fp)
 	dec, err := encdec.NewDecoder(encoding, r)
@@ -51,6 +58,10 @@ func DecFromFile(fn string, encoding string, v interface{}) error {
 	}
 
 	if err := dec.Decode(v); err != nil {
+		return err
+	}
+
+	if err := fp.Close(); err != nil {
 		return err
 	}
 

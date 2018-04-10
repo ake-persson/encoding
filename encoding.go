@@ -27,7 +27,7 @@ func Registered(name string) error {
 // Encodings registered.
 func Encodings() []string {
 	encs := []string{}
-	for k, _ := range encodings {
+	for k := range encodings {
 		encs = append(encs, k)
 	}
 	return encs

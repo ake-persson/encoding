@@ -37,7 +37,7 @@ func WithIndent(indent string) func(Encoder) error {
 	}
 }
 
-// ToByte method.
+// ToBytes method.
 func ToBytes(encoding string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
 	var buf bytes.Buffer
 
@@ -46,7 +46,9 @@ func ToBytes(encoding string, value interface{}, options ...func(Encoder) error)
 		return nil, err
 	}
 
-	enc.Encode(value)
+	if err := enc.Encode(value); err != nil {
+		return nil, err
+	}
 
 	return buf.Bytes(), nil
 }
@@ -57,7 +59,6 @@ func ToFile(encoding string, file string, value interface{}, options ...func(Enc
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	w := bufio.NewWriter(fp)
 	enc, err := NewEncoder(encoding, w)
@@ -65,8 +66,13 @@ func ToFile(encoding string, file string, value interface{}, options ...func(Enc
 		return err
 	}
 
-	enc.Encode(value)
-	w.Flush()
+	if err := enc.Encode(value); err != nil {
+		return err
+	}
 
-	return nil
+	if err := w.Flush(); err != nil {
+		return err
+	}
+
+	return fp.Close()
 }

@@ -12,7 +12,7 @@ type Decoder interface {
 	Decode(value interface{}) error
 }
 
-// Decoder constructor.
+// NewDecoder constructor.
 func NewDecoder(encoding string, reader io.Reader, options ...func(Decoder) error) (Decoder, error) {
 	c, ok := encodings[encoding]
 	if !ok {
@@ -37,11 +37,7 @@ func FromBytes(encoding string, encoded []byte, value interface{}, options ...fu
 		return err
 	}
 
-	if err := dec.Decode(value); err != nil {
-		return err
-	}
-
-	return nil
+	return dec.Decode(value)
 }
 
 // FromFile method.
@@ -50,7 +46,6 @@ func FromFile(encoding string, file string, value interface{}, options ...func(E
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	r := bufio.NewReader(fp)
 	dec, err := NewDecoder(encoding, r)
@@ -62,5 +57,5 @@ func FromFile(encoding string, file string, value interface{}, options ...func(E
 		return err
 	}
 
-	return nil
+	return fp.Close()
 }
