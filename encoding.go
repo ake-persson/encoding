@@ -1,7 +1,6 @@
 package encdec
 
 import (
-	"errors"
 	"io"
 )
 
