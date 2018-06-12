@@ -10,7 +10,10 @@ format:
 	gofmt -w toml/
 
 test:
-#	golint -set_exit_status ./...
+	golint -set_exit_status .
+	golint -set_exit_status json
+	golint -set_exit_status yaml
+	golint -set_exit_status toml
 	go vet ./...
 	errcheck ./...
 	go test ./... -v -covermode=atomic
