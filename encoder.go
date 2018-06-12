@@ -13,8 +13,11 @@ type Encoder interface {
 	Encode(value interface{}) error
 }
 
-// NewEncoder constructor.
-func NewEncoder(encoding string, writer io.Writer, options ...func(Encoder) error) (Encoder, error) {
+// EncoderOption variadic function.
+type EncoderOption func(Encoder) error
+
+// NewEncoder variadic constructor.
+func NewEncoder(encoding string, writer io.Writer, options ...EncoderOption) (Encoder, error) {
 	c, ok := encodings[encoding]
 	if !ok {
 		return nil, ErrNotRegistered
@@ -31,14 +34,14 @@ func NewEncoder(encoding string, writer io.Writer, options ...func(Encoder) erro
 }
 
 // WithIndent output setter.
-func WithIndent(indent string) func(Encoder) error {
+func WithIndent(indent string) EncoderOption {
 	return func(e Encoder) error {
 		return e.SetIndent(indent)
 	}
 }
 
 // ToBytes method.
-func ToBytes(encoding string, value interface{}, options ...func(Encoder) error) ([]byte, error) {
+func ToBytes(encoding string, value interface{}, options ...EncoderOption) ([]byte, error) {
 	var buf bytes.Buffer
 
 	enc, err := NewEncoder(encoding, &buf, options...)
@@ -54,7 +57,7 @@ func ToBytes(encoding string, value interface{}, options ...func(Encoder) error)
 }
 
 // ToFile method.
-func ToFile(encoding string, file string, value interface{}, options ...func(Encoder) error) error {
+func ToFile(encoding string, file string, value interface{}, options ...EncoderOption) error {
 	fp, err := os.Create(file)
 	if err != nil {
 		return err
