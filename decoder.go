@@ -9,46 +9,39 @@ import (
 
 // Decoder interface.
 type Decoder interface {
-	SetMapString() error
+	SetMapString()
 	Decode(value interface{}) error
 }
 
 // DecoderOption function.
-type DecoderOption func(Decoder) error
+type DecoderOption func(Decoder)
 
 // WithMapString convert map[interface{}]interface{} to map[string]interface{} for YAML.
 func WithMapString() DecoderOption {
-	return func(d Decoder) error {
-		return d.SetMapString()
+	return func(d Decoder) {
+		d.SetMapString()
 	}
 }
 
 // NewDecoder variadic constructor.
-func NewDecoder(encoding string, reader io.Reader, options ...DecoderOption) (Decoder, error) {
+func NewDecoder(encoding string, reader io.Reader, options ...DecoderOption) Decoder {
 	c, ok := encodings[encoding]
 	if !ok {
-		return nil, ErrNotRegistered
+		return nil
 	}
 
 	dec := c.NewDecoder(reader)
 	for _, option := range options {
-		if err := option(dec); err != nil {
-			return nil, err
-		}
+		option(dec)
 	}
 
-	return dec, nil
+	return dec
 }
 
 // FromBytes method.
 func FromBytes(encoding string, encoded []byte, value interface{}, options ...DecoderOption) error {
 	r := bufio.NewReader(bytes.NewReader(encoded))
-	dec, err := NewDecoder(encoding, r, options...)
-	if err != nil {
-		return err
-	}
-
-	return dec.Decode(value)
+	return NewDecoder(encoding, r, options...).Decode(value)
 }
 
 // FromFile method.
@@ -59,12 +52,8 @@ func FromFile(encoding string, file string, value interface{}, options ...Decode
 	}
 
 	r := bufio.NewReader(fp)
-	dec, err := NewDecoder(encoding, r, options...)
-	if err != nil {
-		return err
-	}
 
-	if err := dec.Decode(value); err != nil {
+	if err := NewDecoder(encoding, r, options...).Decode(value); err != nil {
 		return err
 	}
 

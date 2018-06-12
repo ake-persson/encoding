@@ -1,8 +1,14 @@
 package encdec
 
-import "io"
+import (
+	"errors"
+	"io"
+)
 
 var encodings = make(map[string]Encoding)
+
+// ErrNotRegistered encoding isn't registered.
+var ErrNotRegistered = errors.New("encoding isn't registered")
 
 // Encoding interface.
 type Encoding interface {

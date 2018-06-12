@@ -9,34 +9,32 @@ import (
 
 // Encoder interface.
 type Encoder interface {
-	SetIndent(indent string) error
+	SetIndent(indent string)
 	Encode(value interface{}) error
 }
 
 // EncoderOption variadic function.
-type EncoderOption func(Encoder) error
+type EncoderOption func(Encoder)
 
 // NewEncoder variadic constructor.
-func NewEncoder(encoding string, writer io.Writer, options ...EncoderOption) (Encoder, error) {
+func NewEncoder(encoding string, writer io.Writer, options ...EncoderOption) Encoder {
 	c, ok := encodings[encoding]
 	if !ok {
-		return nil, ErrNotRegistered
+		return nil
 	}
 
 	enc := c.NewEncoder(writer)
 	for _, option := range options {
-		if err := option(enc); err != nil {
-			return nil, err
-		}
+		option(enc)
 	}
 
-	return enc, nil
+	return enc
 }
 
 // WithIndent output setter.
 func WithIndent(indent string) EncoderOption {
-	return func(e Encoder) error {
-		return e.SetIndent(indent)
+	return func(e Encoder) {
+		e.SetIndent(indent)
 	}
 }
 
@@ -44,12 +42,7 @@ func WithIndent(indent string) EncoderOption {
 func ToBytes(encoding string, value interface{}, options ...EncoderOption) ([]byte, error) {
 	var buf bytes.Buffer
 
-	enc, err := NewEncoder(encoding, &buf, options...)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := enc.Encode(value); err != nil {
+	if err := NewEncoder(encoding, &buf, options...).Encode(value); err != nil {
 		return nil, err
 	}
 
@@ -64,12 +57,8 @@ func ToFile(encoding string, file string, value interface{}, options ...EncoderO
 	}
 
 	w := bufio.NewWriter(fp)
-	enc, err := NewEncoder(encoding, w, options...)
-	if err != nil {
-		return err
-	}
 
-	if err := enc.Encode(value); err != nil {
+	if err := NewEncoder(encoding, w, options...).Encode(value); err != nil {
 		return err
 	}
 

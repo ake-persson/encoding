@@ -6,9 +6,8 @@ type encoder struct {
 	encoder *json.Encoder
 }
 
-func (e *encoder) SetIndent(indent string) error {
+func (e *encoder) SetIndent(indent string) {
 	e.encoder.SetIndent("", indent)
-	return nil
 }
 
 func (e *encoder) Encode(value interface{}) error {

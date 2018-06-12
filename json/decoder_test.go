@@ -21,7 +21,7 @@ func TestFromByte(t *testing.T) {
 
 func TestFromByteWithMapString(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("json", []byte(testJSON), &g, encdec.WithMapString()); err != encdec.ErrNotSupported {
+	if err := encdec.FromBytes("json", []byte(testJSON), &g, encdec.WithMapString()); err != nil {
 		t.Error(err)
 	}
 }

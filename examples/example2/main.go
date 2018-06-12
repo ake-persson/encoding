@@ -25,11 +25,7 @@ func main() {
 	}
 
 	w := bufio.NewWriter(os.Stdout)
-	enc, err := encdec.NewEncoder("json", w)
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	enc := encdec.NewEncoder("json", w)
 	for _, m := range msgs {
 		if err := enc.Encode(m); err != nil {
 			log.Fatal(err)

@@ -21,7 +21,7 @@ func TestFromByte(t *testing.T) {
 
 func TestFromByteWithMapString(t *testing.T) {
 	g := Messages{}
-	if err := encdec.FromBytes("toml", []byte(testTOML), &g, encdec.WithMapString()); err != encdec.ErrNotSupported {
+	if err := encdec.FromBytes("toml", []byte(testTOML), &g, encdec.WithMapString()); err != nil {
 		t.Error(err)
 	}
 }

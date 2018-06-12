@@ -82,8 +82,7 @@ func TestToByte(t *testing.T) {
 }
 
 func TestToByteWithIndent(t *testing.T) {
-	_, err := encdec.ToBytes("toml", testStruct, encdec.WithIndent(""))
-	if err != encdec.ErrNotSupported {
+	if _, err := encdec.ToBytes("toml", testStruct, encdec.WithIndent("")); err != nil {
 		t.Error(err)
 	}
 }

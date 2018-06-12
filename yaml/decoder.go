@@ -7,9 +7,8 @@ type decoder struct {
 	decoder   *yaml.Decoder
 }
 
-func (d *decoder) SetMapString() error {
+func (d *decoder) SetMapString() {
 	d.mapString = true
-	return nil
 }
 
 func (d *decoder) Decode(value interface{}) error {

@@ -80,8 +80,7 @@ func TestToByte(t *testing.T) {
 }
 
 func TestToByteWithIndent(t *testing.T) {
-	_, err := encdec.ToBytes("yaml", testMap, encdec.WithIndent(""))
-	if err != encdec.ErrNotSupported {
+	if _, err := encdec.ToBytes("yaml", testMap, encdec.WithIndent("")); err != nil {
 		t.Error(err)
 	}
 }

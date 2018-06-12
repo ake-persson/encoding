@@ -25,11 +25,7 @@ func EncToFile(fn string, encoding string, v interface{}) error {
 	}
 
 	w := bufio.NewWriter(fp)
-	enc, err := encdec.NewEncoder(encoding, w)
-	if err != nil {
-		return err
-	}
-
+	enc := encdec.NewEncoder(encoding, w)
 	if err := enc.Encode(v); err != nil {
 		return err
 	}
@@ -52,11 +48,7 @@ func DecFromFile(fn string, encoding string, v interface{}) error {
 	}
 
 	r := bufio.NewReader(fp)
-	dec, err := encdec.NewDecoder(encoding, r)
-	if err != nil {
-		return err
-	}
-
+	dec := encdec.NewDecoder(encoding, r)
 	if err := dec.Decode(v); err != nil {
 		return err
 	}
