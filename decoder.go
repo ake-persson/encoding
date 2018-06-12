@@ -17,7 +17,7 @@ type Decoder interface {
 type DecoderOption func(Decoder) error
 
 // WithMapString convert map[interface{}]interface{} to map[string]interface{} for YAML.
-func WithMapString() func(Decoder) error {
+func WithMapString() DecoderOption {
 	return func(d Decoder) error {
 		return d.SetMapString()
 	}
