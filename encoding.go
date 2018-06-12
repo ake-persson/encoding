@@ -7,9 +7,6 @@ import (
 
 var encodings = make(map[string]Encoding)
 
-// ErrNotRegistered encoding isn't registered.
-var ErrNotRegistered = errors.New("encoding isn't registered")
-
 // Encoding interface.
 type Encoding interface {
 	NewEncoder(writer io.Writer) Encoder
@@ -21,13 +18,13 @@ func Register(name string, encoding Encoding) {
 	encodings[name] = encoding
 }
 
-// Registered encoding is registered.
-func Registered(name string) error {
+// Registered encoding.
+func Registered(name string) bool {
 	_, ok := encodings[name]
 	if !ok {
-		return ErrNotRegistered
+		return false
 	}
-	return nil
+	return true
 }
 
 // Encodings registered.

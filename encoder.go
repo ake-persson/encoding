@@ -31,7 +31,7 @@ func NewEncoder(encoding string, writer io.Writer, options ...EncoderOption) Enc
 	return enc
 }
 
-// WithIndent output setter.
+// WithIndent output setter for JSON.
 func WithIndent(indent string) EncoderOption {
 	return func(e Encoder) {
 		e.SetIndent(indent)

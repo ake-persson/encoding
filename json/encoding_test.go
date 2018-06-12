@@ -23,7 +23,7 @@ func TestEncodings(t *testing.T) {
 		t.Error(fmt.Errorf("encoding not in list"))
 	}
 
-	if err := encdec.Registered("json"); err != nil {
-		t.Error(err)
+	if ok := encdec.Registered("json"); !ok {
+		t.Error("not registered")
 	}
 }
