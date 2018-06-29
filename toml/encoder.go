@@ -1,7 +1,7 @@
 package toml
 
 import (
-	"github.com/pelletier/go-toml"
+	"github.com/BurntSushi/toml"
 )
 
 type encoder struct {

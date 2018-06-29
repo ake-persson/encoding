@@ -17,8 +17,7 @@ type Messages struct {
 }
 
 var (
-	testTOML = `
-[[Messages]]
+	testTOML = `[[Messages]]
   Name = "Ed"
   Text = "Knock knock."
 
@@ -77,7 +76,7 @@ func TestToByte(t *testing.T) {
 	}
 
 	if string(b) != testTOML {
-		t.Errorf("want:\n%s, got:\n%s", testTOML, string(b))
+		t.Errorf("want:\n%s\n\ngot:\n%s", testTOML, string(b))
 	}
 }
 
@@ -98,7 +97,7 @@ func TestToFile(t *testing.T) {
 	}
 
 	if string(b) != testTOML {
-		t.Errorf("want:\n%s, got:\n%s", testTOML, string(b))
+		t.Errorf("want:\n%s\n\ngot:\n%s", testTOML, string(b))
 	}
 
 	if err := os.Remove(tmpFile); err != nil {

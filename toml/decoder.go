@@ -1,15 +1,18 @@
 package toml
 
 import (
-	"github.com/pelletier/go-toml"
+	"io"
+
+	"github.com/BurntSushi/toml"
 )
 
 type decoder struct {
-	decoder *toml.Decoder
+	reader io.Reader
 }
 
 func (d *decoder) SetMapString() {}
 
 func (d *decoder) Decode(value interface{}) error {
-	return d.decoder.Decode(value)
+	_, err := toml.DecodeReader(d.reader, value)
+	return err
 }

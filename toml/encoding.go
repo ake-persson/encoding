@@ -3,7 +3,7 @@ package toml
 import (
 	"io"
 
-	"github.com/pelletier/go-toml"
+	"github.com/BurntSushi/toml"
 
 	"github.com/mickep76/encdec"
 )
@@ -15,7 +15,7 @@ func (c *encoding) NewEncoder(writer io.Writer) encdec.Encoder {
 }
 
 func (c *encoding) NewDecoder(reader io.Reader) encdec.Decoder {
-	return &decoder{decoder: toml.NewDecoder(reader)}
+	return &decoder{reader: reader}
 }
 
 func init() {
