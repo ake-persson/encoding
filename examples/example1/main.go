@@ -23,7 +23,11 @@ func main() {
 	{"Name": "Ed", "Text": "Go fmt yourself!"}
 `
 
-	dec := encoding.NewDecoder("json", strings.NewReader(msgs))
+	dec, err := encoding.NewDecoder("json", strings.NewReader(msgs))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for {
 		var m Message
 		if err := dec.Decode(&m); err == io.EOF {

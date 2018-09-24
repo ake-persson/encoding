@@ -5,7 +5,7 @@ import (
 	"log"
 
 	"github.com/mickep76/encoding"
-	_ "github.com/mickep76/encoding/json"
+	_ "github.com/mickep76/encoding/yaml"
 )
 
 type Message struct {
@@ -23,12 +23,13 @@ func main() {
 		&Message{Name: "Ed", Text: "Go fmt yourself!"},
 	}
 
-	if err := encoding.ToFile("json", "example4.json", in); err != nil {
+	b, err := encoding.Encode("yaml", in)
+	if err != nil {
 		log.Fatal(err)
 	}
 
 	out := Messages{}
-	if err := encoding.FromFile("json", "example4.json", &out); err != nil {
+	if err := encoding.Decode("yaml", b, &out); err != nil {
 		log.Fatal(err)
 	}
 

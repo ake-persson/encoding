@@ -18,14 +18,18 @@ type Messages struct {
 	Messages []*Message
 }
 
-func EncToFile(fn string, encoding string, v interface{}) error {
+func EncToFile(fn string, name string, v interface{}) error {
 	fp, err := os.Create(fn)
 	if err != nil {
 		return err
 	}
 
 	w := bufio.NewWriter(fp)
-	enc := encoding.NewEncoder(encoding, w)
+	enc, err := encoding.NewEncoder(name, w)
+	if err != nil {
+		return err
+	}
+
 	if err := enc.Encode(v); err != nil {
 		return err
 	}
@@ -41,14 +45,18 @@ func EncToFile(fn string, encoding string, v interface{}) error {
 	return nil
 }
 
-func DecFromFile(fn string, encoding string, v interface{}) error {
+func DecFromFile(fn string, name string, v interface{}) error {
 	fp, err := os.Open(fn)
 	if err != nil {
 		return err
 	}
 
 	r := bufio.NewReader(fp)
-	dec := encoding.NewDecoder(encoding, r)
+	dec, err := encoding.NewDecoder(name, r)
+	if err != nil {
+		return err
+	}
+
 	if err := dec.Decode(v); err != nil {
 		return err
 	}

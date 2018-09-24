@@ -38,13 +38,13 @@ func main() {
                 &Message{Name: "Ed", Text: "Go fmt yourself!"},
         }
 
-        b, err := encoding.ToBytes("yaml", in)
+        b, err := encoding.Encode("yaml", in)
         if err != nil {
                 log.Fatal(err)
         }
 
         out := Messages{}
-        if err := encoding.FromBytes("yaml", b, &out); err != nil {
+        if err := encoding.Decode("yaml", b, &out); err != nil {
                 log.Fatal(err)
         }
 
