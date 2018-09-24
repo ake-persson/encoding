@@ -1,23 +1,9 @@
 package toml
 
-import (
-	"io"
+import "github.com/mickep76/encoding"
 
-	"github.com/BurntSushi/toml"
-
-	"github.com/mickep76/encoding"
-)
-
-type encoding struct{}
-
-func (c *encoding) NewEncoder(writer io.Writer) encoding.Encoder {
-	return &encoder{encoder: toml.NewEncoder(writer)}
-}
-
-func (c *encoding) NewDecoder(reader io.Reader) encoding.Decoder {
-	return &decoder{reader: reader}
-}
+type tomlEncoding struct{}
 
 func init() {
-	encoding.Register("toml", &encoding{})
+	encoding.Register("toml", &tomlEncoding{})
 }
