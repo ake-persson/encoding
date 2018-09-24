@@ -8,9 +8,9 @@ import (
 	"github.com/mickep76/encoding"
 )
 
-func TestFromByte(t *testing.T) {
+func TestDecode(t *testing.T) {
 	var g interface{}
-	if err := encoding.FromBytes("json", []byte(testJSON), &g); err != nil {
+	if err := encoding.Decode("json", []byte(testEncoded), &g); err != nil {
 		t.Error(err)
 	}
 
@@ -19,20 +19,9 @@ func TestFromByte(t *testing.T) {
 	}
 }
 
-func TestFromByteWithMapString(t *testing.T) {
+func TestDecodeWithMapString(t *testing.T) {
 	var g interface{}
-	if err := encoding.FromBytes("json", []byte(testJSON), &g, encoding.WithMapString()); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestFromFile(t *testing.T) {
-	var g interface{}
-	if err := encoding.FromFile("json", "test.json", &g); err != nil {
-		t.Error(err)
-	}
-
-	if err := deep.Equal(g, testMap); err != nil {
+	if err := encoding.FromBytes("json", []byte(testEncoded), &g, encoding.WithMapString()); err != nil {
 		t.Error(err)
 	}
 }

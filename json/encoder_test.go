@@ -8,51 +8,7 @@ import (
 	"github.com/mickep76/encoding"
 )
 
-var (
-	testJSON = `{"test":{"abc":{"myTest":"Test2"},"myTest":"Test"}}
-`
-
-	testJSONIndent = `{
-  "test": {
-    "abc": {
-      "myTest": "Test2"
-    },
-    "myTest": "Test"
-  }
-}
-`
-
-	testMap = map[string]interface{}{
-		"test": map[string]interface{}{
-			"myTest": "Test",
-			"abc": map[string]interface{}{
-				"myTest": "Test2",
-			},
-		},
-	}
-
-	tmpFile = "test.tmp"
-)
-
-func readFile(fn string) ([]byte, error) {
-	fp, err := os.Open(fn)
-	if err != nil {
-		return nil, err
-	}
-
-	b, err := ioutil.ReadAll(fp)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := fp.Close(); err != nil {
-		return nil, err
-	}
-
-	return b, nil
-}
-
-func TestToByte(t *testing.T) {
+func TestEncode(t *testing.T) {
 	b, err := encoding.ToBytes("json", testMap)
 	if err != nil {
 		t.Error(err)
@@ -63,7 +19,7 @@ func TestToByte(t *testing.T) {
 	}
 }
 
-func TestToByteWithIndent(t *testing.T) {
+func TestEncodeWithIndent(t *testing.T) {
 	b, err := encoding.ToBytes("json", testMap, encoding.WithIndent("  "))
 	if err != nil {
 		t.Error(err)
@@ -71,24 +27,5 @@ func TestToByteWithIndent(t *testing.T) {
 
 	if string(b) != testJSONIndent {
 		t.Errorf("want:\n%s, got:\n%s", testJSONIndent, string(b))
-	}
-}
-
-func TestToFile(t *testing.T) {
-	if err := encoding.ToFile("json", tmpFile, testMap); err != nil {
-		t.Error(err)
-	}
-
-	b, err := readFile(tmpFile)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if string(b) != testJSON {
-		t.Errorf("want:\n%s, got:\n%s", testJSONIndent, string(b))
-	}
-
-	if err := os.Remove(tmpFile); err != nil {
-		t.Error(err)
 	}
 }
