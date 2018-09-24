@@ -1,22 +1,9 @@
 package json
 
-import (
-	"encoding/json"
-	"io"
+import "github.com/mickep76/encoding"
 
-	"github.com/mickep76/encdec"
-)
-
-type encoding struct{}
-
-func (c *encoding) NewEncoder(writer io.Writer) encdec.Encoder {
-	return &encoder{encoder: json.NewEncoder(writer)}
-}
-
-func (c *encoding) NewDecoder(reader io.Reader) encdec.Decoder {
-	return &decoder{decoder: json.NewDecoder(reader)}
-}
+type jsonEncoding struct{}
 
 func init() {
-	encdec.Register("json", &encoding{})
+	encoding.Register("json", &jsonEncoding{})
 }

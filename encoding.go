@@ -1,6 +1,7 @@
-package encdec
+package encoding
 
 import (
+	"fmt"
 	"io"
 )
 
@@ -8,8 +9,8 @@ var encodings = make(map[string]Encoding)
 
 // Encoding interface.
 type Encoding interface {
-	NewEncoder(writer io.Writer) Encoder
-	NewDecoder(reader io.Reader) Decoder
+	NewEncoder(w io.Writer, opts ...EncoderOption) (Encoder, error)
+	NewDecoder(r io.Reader, opts ...DecoderOption) (Decoder, error)
 }
 
 // Register encoding.
@@ -18,19 +19,19 @@ func Register(name string, encoding Encoding) {
 }
 
 // Registered encoding.
-func Registered(name string) bool {
-	_, ok := encodings[name]
+func Registered(name string) (Encoding, error) {
+	e, ok := encodings[name]
 	if !ok {
-		return false
+		return nil, fmt.Errorf("encoding not registered: %s", name)
 	}
-	return true
+	return e, nil
 }
 
 // Encodings registered.
 func Encodings() []string {
-	encs := []string{}
-	for k := range encodings {
-		encs = append(encs, k)
+	l := []string{}
+	for a := range encodings {
+		l = append(l, a)
 	}
-	return encs
+	return l
 }

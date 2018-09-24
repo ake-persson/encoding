@@ -4,11 +4,51 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
-func inList(a string, list []string) bool {
-	for _, b := range list {
+var (
+	testEncoded = `test:
+  abc:
+    myTest: Test2
+  myInt: 1
+  myList:
+  - Item 1
+  - Item 2
+  myTest: Test
+`
+
+	testMap = map[string]interface{}{
+		"test": map[string]interface{}{
+			"myTest": "Test",
+			"abc": map[string]interface{}{
+				"myTest": "Test2",
+			},
+			"myList": []interface{}{
+				"Item 1",
+				"Item 2",
+			},
+			"myInt": 1,
+		},
+	}
+
+	testMapInterface = map[interface{}]interface{}{
+		"test": map[interface{}]interface{}{
+			"myTest": "Test",
+			"abc": map[interface{}]interface{}{
+				"myTest": "Test2",
+			},
+			"myList": []interface{}{
+				"Item 1",
+				"Item 2",
+			},
+			"myInt": 1,
+		},
+	}
+)
+
+func inList(a string, l []string) bool {
+	for _, b := range l {
 		if a == b {
 			return true
 		}
@@ -17,13 +57,11 @@ func inList(a string, list []string) bool {
 }
 
 func TestEncodings(t *testing.T) {
-	encs := encdec.Encodings()
-
-	if !inList("yaml", encs) {
-		t.Error(fmt.Errorf("encoding not in list"))
+	if !inList("yaml", encoding.Encodings()) {
+		t.Error(fmt.Errorf("yaml encoding not in registered encodings"))
 	}
 
-	if ok := encdec.Registered("yaml"); !ok {
-		t.Error("not registered")
+	if _, err := encoding.Registered("yaml"); err != nil {
+		t.Error(err)
 	}
 }

@@ -5,12 +5,12 @@ import (
 
 	"github.com/go-test/deep"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
-func TestFromByte(t *testing.T) {
+func TestDecode(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("json", []byte(testJSON), &g); err != nil {
+	if err := encoding.Decode("json", []byte(testEncoded), &g); err != nil {
 		t.Error(err)
 	}
 
@@ -19,20 +19,9 @@ func TestFromByte(t *testing.T) {
 	}
 }
 
-func TestFromByteWithMapString(t *testing.T) {
+func TestDecodeWithMapString(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("json", []byte(testJSON), &g, encdec.WithMapString()); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestFromFile(t *testing.T) {
-	var g interface{}
-	if err := encdec.FromFile("json", "test.json", &g); err != nil {
-		t.Error(err)
-	}
-
-	if err := deep.Equal(g, testMap); err != nil {
-		t.Error(err)
+	if err := encoding.Decode("json", []byte(testEncoded), &g, encoding.WithMapString()); err == nil {
+		t.Error("this option should not be supported for json")
 	}
 }

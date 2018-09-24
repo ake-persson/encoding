@@ -5,12 +5,12 @@ import (
 
 	"github.com/go-test/deep"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
-func TestFromByte(t *testing.T) {
+func TestDecode(t *testing.T) {
 	g := Messages{}
-	if err := encdec.FromBytes("toml", []byte(testTOML), &g); err != nil {
+	if err := encoding.Decode("toml", []byte(testEncoded), &g); err != nil {
 		t.Error(err)
 	}
 
@@ -19,20 +19,9 @@ func TestFromByte(t *testing.T) {
 	}
 }
 
-func TestFromByteWithMapString(t *testing.T) {
+func TestDecodeWithMapString(t *testing.T) {
 	g := Messages{}
-	if err := encdec.FromBytes("toml", []byte(testTOML), &g, encdec.WithMapString()); err != nil {
-		t.Error(err)
-	}
-}
-
-func TestFromFile(t *testing.T) {
-	g := Messages{}
-	if err := encdec.FromFile("toml", "test.toml", &g); err != nil {
-		t.Error(err)
-	}
-
-	if err := deep.Equal(g, testStruct); err != nil {
+	if err := encoding.Decode("toml", []byte(testEncoded), &g, encoding.WithMapString()); err != nil {
 		t.Error(err)
 	}
 }

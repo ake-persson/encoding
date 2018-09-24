@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/mickep76/encdec"
-	_ "github.com/mickep76/encdec/json"
+	"github.com/mickep76/encoding"
+	_ "github.com/mickep76/encoding/yaml"
 )
 
 type Message struct {
@@ -23,12 +23,13 @@ func main() {
 		&Message{Name: "Ed", Text: "Go fmt yourself!"},
 	}
 
-	if err := encdec.ToFile("json", "example4.json", in); err != nil {
+	b, err := encoding.Encode("yaml", in)
+	if err != nil {
 		log.Fatal(err)
 	}
 
 	out := Messages{}
-	if err := encdec.FromFile("json", "example4.json", &out); err != nil {
+	if err := encoding.Decode("yaml", b, &out); err != nil {
 		log.Fatal(err)
 	}
 

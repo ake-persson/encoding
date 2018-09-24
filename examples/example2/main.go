@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/mickep76/encdec"
-	_ "github.com/mickep76/encdec/json"
+	"github.com/mickep76/encoding"
+	_ "github.com/mickep76/encoding/json"
 )
 
 type Message struct {
@@ -25,7 +25,11 @@ func main() {
 	}
 
 	w := bufio.NewWriter(os.Stdout)
-	enc := encdec.NewEncoder("json", w)
+	enc, err := encoding.NewEncoder("json", w)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	for _, m := range msgs {
 		if err := enc.Encode(m); err != nil {
 			log.Fatal(err)

@@ -4,15 +4,24 @@ import (
 	"io"
 
 	"github.com/BurntSushi/toml"
+	"github.com/pkg/errors"
+
+	"github.com/mickep76/encoding"
 )
 
 type decoder struct {
-	reader io.Reader
+	decoder io.Reader
 }
 
-func (d *decoder) SetMapString() {}
+func (t *tomlEncoding) NewDecoder(r io.Reader, opts ...encoding.DecoderOption) (encoding.Decoder, error) {
+	return &decoder{decoder: r}, nil
+}
 
-func (d *decoder) Decode(value interface{}) error {
-	_, err := toml.DecodeReader(d.reader, value)
+func (d *decoder) SetMapString() error {
+	return errors.Wrap(encoding.ErrUnsupportedOption, "encoding toml")
+}
+
+func (d *decoder) Decode(v interface{}) error {
+	_, err := toml.DecodeReader(d.decoder, v)
 	return err
 }
