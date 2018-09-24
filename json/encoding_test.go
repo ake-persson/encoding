@@ -7,14 +7,6 @@ import (
 	"github.com/mickep76/encoding"
 )
 
-import (
-	"io/ioutil"
-	"os"
-	"testing"
-
-	"github.com/mickep76/encoding"
-)
-
 var (
 	testEncoded = `{"test":{"abc":{"myTest":"Test2"},"myTest":"Test"}}
 `

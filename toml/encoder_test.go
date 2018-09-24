@@ -19,6 +19,6 @@ func TestEncode(t *testing.T) {
 
 func TestEncodeWithIndent(t *testing.T) {
 	if _, err := encoding.Encode("toml", testStruct, encoding.WithIndent("")); err == nil {
-		t.Error("toml this option should no supported")
+		t.Error("this option should not be supported for toml")
 	}
 }

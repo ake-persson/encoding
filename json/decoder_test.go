@@ -21,7 +21,7 @@ func TestDecode(t *testing.T) {
 
 func TestDecodeWithMapString(t *testing.T) {
 	var g interface{}
-	if err := encoding.FromBytes("json", []byte(testEncoded), &g, encoding.WithMapString()); err != nil {
-		t.Error(err)
+	if err := encoding.Decode("json", []byte(testEncoded), &g, encoding.WithMapString()); err == nil {
+		t.Error("this option should not be supported for json")
 	}
 }
