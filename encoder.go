@@ -1,34 +1,26 @@
-package encdec
+package encoding
 
 import (
-	"bufio"
 	"bytes"
 	"io"
-	"os"
 )
 
 // Encoder interface.
 type Encoder interface {
+	Encode(v interface{}) error
 	SetIndent(indent string)
-	Encode(value interface{}) error
 }
 
 // EncoderOption variadic function.
 type EncoderOption func(Encoder)
 
 // NewEncoder variadic constructor.
-func NewEncoder(encoding string, writer io.Writer, options ...EncoderOption) Encoder {
-	c, ok := encodings[encoding]
-	if !ok {
-		return nil
+func NewEncoder(name string, w io.Writer, opts ...EncoderOption) (Encoder, error) {
+	e, err := Registered(name)
+	if err != nil {
+		return nil, err
 	}
-
-	enc := c.NewEncoder(writer)
-	for _, option := range options {
-		option(enc)
-	}
-
-	return enc
+	return e.NewEncoder(w, opts...)
 }
 
 // WithIndent output setter for JSON.
@@ -38,33 +30,18 @@ func WithIndent(indent string) EncoderOption {
 	}
 }
 
-// ToBytes method.
-func ToBytes(encoding string, value interface{}, options ...EncoderOption) ([]byte, error) {
+// Encode method.
+func Encode(name string, v interface{}, opts ...EncoderOption) ([]byte, error) {
 	var buf bytes.Buffer
 
-	if err := NewEncoder(encoding, &buf, options...).Encode(value); err != nil {
+	e, err := NewEncoder(name, &buf, opts...)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := e.Encode(v); err != nil {
 		return nil, err
 	}
 
 	return buf.Bytes(), nil
-}
-
-// ToFile method.
-func ToFile(encoding string, file string, value interface{}, options ...EncoderOption) error {
-	fp, err := os.Create(file)
-	if err != nil {
-		return err
-	}
-
-	w := bufio.NewWriter(fp)
-
-	if err := NewEncoder(encoding, w, options...).Encode(value); err != nil {
-		return err
-	}
-
-	if err := w.Flush(); err != nil {
-		return err
-	}
-
-	return fp.Close()
 }

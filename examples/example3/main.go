@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/mickep76/encdec"
-	_ "github.com/mickep76/encdec/toml"
+	"github.com/mickep76/encoding"
+	_ "github.com/mickep76/encoding/toml"
 )
 
 type Message struct {
@@ -25,7 +25,7 @@ func EncToFile(fn string, encoding string, v interface{}) error {
 	}
 
 	w := bufio.NewWriter(fp)
-	enc := encdec.NewEncoder(encoding, w)
+	enc := encoding.NewEncoder(encoding, w)
 	if err := enc.Encode(v); err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func DecFromFile(fn string, encoding string, v interface{}) error {
 	}
 
 	r := bufio.NewReader(fp)
-	dec := encdec.NewDecoder(encoding, r)
+	dec := encoding.NewDecoder(encoding, r)
 	if err := dec.Decode(v); err != nil {
 		return err
 	}

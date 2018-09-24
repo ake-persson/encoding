@@ -5,12 +5,12 @@ import (
 
 	"github.com/go-test/deep"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
 func TestFromByte(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("json", []byte(testJSON), &g); err != nil {
+	if err := encoding.FromBytes("json", []byte(testJSON), &g); err != nil {
 		t.Error(err)
 	}
 
@@ -21,14 +21,14 @@ func TestFromByte(t *testing.T) {
 
 func TestFromByteWithMapString(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("json", []byte(testJSON), &g, encdec.WithMapString()); err != nil {
+	if err := encoding.FromBytes("json", []byte(testJSON), &g, encoding.WithMapString()); err != nil {
 		t.Error(err)
 	}
 }
 
 func TestFromFile(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromFile("json", "test.json", &g); err != nil {
+	if err := encoding.FromFile("json", "test.json", &g); err != nil {
 		t.Error(err)
 	}
 

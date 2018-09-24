@@ -6,12 +6,12 @@ import (
 
 	"github.com/go-test/deep"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
 func TestFromByte(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("yaml", []byte(testYAML), &g); err != nil {
+	if err := encoding.FromBytes("yaml", []byte(testYAML), &g); err != nil {
 		t.Error(err)
 	}
 
@@ -22,7 +22,7 @@ func TestFromByte(t *testing.T) {
 
 func TestFromByteWithMapString(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromBytes("yaml", []byte(testYAML), &g, encdec.WithMapString()); err != nil {
+	if err := encoding.FromBytes("yaml", []byte(testYAML), &g, encoding.WithMapString()); err != nil {
 		t.Error(err)
 	}
 
@@ -39,14 +39,14 @@ func TestFromByteWithMapStringError(t *testing.T) {
 	}()
 
 	g := ""
-	if err := encdec.FromBytes("yaml", []byte(testYAML), g, encdec.WithMapString()); err != nil {
+	if err := encoding.FromBytes("yaml", []byte(testYAML), g, encoding.WithMapString()); err != nil {
 		t.Error(fmt.Errorf("expected a panic! %v", err))
 	}
 }
 
 func TestFromFile(t *testing.T) {
 	var g interface{}
-	if err := encdec.FromFile("yaml", "test.yaml", &g); err != nil {
+	if err := encoding.FromFile("yaml", "test.yaml", &g); err != nil {
 		t.Error(err)
 	}
 

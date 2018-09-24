@@ -6,8 +6,8 @@ import (
 	"log"
 	"strings"
 
-	"github.com/mickep76/encdec"
-	_ "github.com/mickep76/encdec/json"
+	"github.com/mickep76/encoding"
+	_ "github.com/mickep76/encoding/json"
 )
 
 type Message struct {
@@ -23,7 +23,7 @@ func main() {
 	{"Name": "Ed", "Text": "Go fmt yourself!"}
 `
 
-	dec := encdec.NewDecoder("json", strings.NewReader(msgs))
+	dec := encoding.NewDecoder("json", strings.NewReader(msgs))
 	for {
 		var m Message
 		if err := dec.Decode(&m); err == io.EOF {

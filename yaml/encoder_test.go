@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
 var (
@@ -69,7 +69,7 @@ func readFile(fn string) ([]byte, error) {
 }
 
 func TestToByte(t *testing.T) {
-	b, err := encdec.ToBytes("yaml", testMap)
+	b, err := encoding.ToBytes("yaml", testMap)
 	if err != nil {
 		t.Error(err)
 	}
@@ -80,13 +80,13 @@ func TestToByte(t *testing.T) {
 }
 
 func TestToByteWithIndent(t *testing.T) {
-	if _, err := encdec.ToBytes("yaml", testMap, encdec.WithIndent("")); err != nil {
+	if _, err := encoding.ToBytes("yaml", testMap, encoding.WithIndent("")); err != nil {
 		t.Error(err)
 	}
 }
 
 func TestToFile(t *testing.T) {
-	if err := encdec.ToFile("yaml", tmpFile, testMap); err != nil {
+	if err := encoding.ToFile("yaml", tmpFile, testMap); err != nil {
 		t.Error(err)
 	}
 

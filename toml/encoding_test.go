@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
 func inList(a string, list []string) bool {
@@ -17,13 +17,13 @@ func inList(a string, list []string) bool {
 }
 
 func TestEncodings(t *testing.T) {
-	encs := encdec.Encodings()
+	encs := encoding.Encodings()
 
 	if !inList("toml", encs) {
 		t.Error(fmt.Errorf("encoding not in list"))
 	}
 
-	if ok := encdec.Registered("toml"); !ok {
+	if ok := encoding.Registered("toml"); !ok {
 		t.Error("not registered")
 	}
 }

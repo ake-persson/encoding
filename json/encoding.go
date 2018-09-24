@@ -4,19 +4,19 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
 type encoding struct{}
 
-func (c *encoding) NewEncoder(writer io.Writer) encdec.Encoder {
+func (c *encoding) NewEncoder(writer io.Writer) encoding.Encoder {
 	return &encoder{encoder: json.NewEncoder(writer)}
 }
 
-func (c *encoding) NewDecoder(reader io.Reader) encdec.Decoder {
+func (c *encoding) NewDecoder(reader io.Reader) encoding.Decoder {
 	return &decoder{decoder: json.NewDecoder(reader)}
 }
 
 func init() {
-	encdec.Register("json", &encoding{})
+	encoding.Register("json", &encoding{})
 }

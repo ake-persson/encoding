@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/mickep76/encdec"
+	"github.com/mickep76/encoding"
 )
 
 type Message struct {
@@ -70,7 +70,7 @@ func readFile(fn string) ([]byte, error) {
 }
 
 func TestToByte(t *testing.T) {
-	b, err := encdec.ToBytes("toml", testStruct)
+	b, err := encoding.ToBytes("toml", testStruct)
 	if err != nil {
 		t.Error(err)
 	}
@@ -81,13 +81,13 @@ func TestToByte(t *testing.T) {
 }
 
 func TestToByteWithIndent(t *testing.T) {
-	if _, err := encdec.ToBytes("toml", testStruct, encdec.WithIndent("")); err != nil {
+	if _, err := encoding.ToBytes("toml", testStruct, encoding.WithIndent("")); err != nil {
 		t.Error(err)
 	}
 }
 
 func TestToFile(t *testing.T) {
-	if err := encdec.ToFile("toml", tmpFile, testStruct); err != nil {
+	if err := encoding.ToFile("toml", tmpFile, testStruct); err != nil {
 		t.Error(err)
 	}
 

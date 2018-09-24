@@ -1,61 +1,41 @@
-package encdec
+package encoding
 
 import (
-	"bufio"
 	"bytes"
 	"io"
-	"os"
 )
 
 // Decoder interface.
 type Decoder interface {
+	Decode(v interface{}) error
 	SetMapString()
-	Decode(value interface{}) error
 }
 
 // DecoderOption function.
 type DecoderOption func(Decoder)
 
-// WithMapString convert map[interface{}]interface{} to map[string]interface{} for YAML.
+// NewDecoder variadic constructor.
+func NewDecoder(name string, r io.Reader, opts ...DecoderOption) (Decoder, error) {
+	e, err := Registered(name)
+	if err != nil {
+		return nil, err
+	}
+	return e.NewDecoder(r, opts...)
+}
+
+// WithMapString convert map[interface{}]interface{} to map[string]interface{}.
+// Suppored by YAML.
 func WithMapString() DecoderOption {
 	return func(d Decoder) {
 		d.SetMapString()
 	}
 }
 
-// NewDecoder variadic constructor.
-func NewDecoder(encoding string, reader io.Reader, options ...DecoderOption) Decoder {
-	c, ok := encodings[encoding]
-	if !ok {
-		return nil
-	}
-
-	dec := c.NewDecoder(reader)
-	for _, option := range options {
-		option(dec)
-	}
-
-	return dec
-}
-
-// FromBytes method.
-func FromBytes(encoding string, encoded []byte, value interface{}, options ...DecoderOption) error {
-	r := bufio.NewReader(bytes.NewReader(encoded))
-	return NewDecoder(encoding, r, options...).Decode(value)
-}
-
-// FromFile method.
-func FromFile(encoding string, file string, value interface{}, options ...DecoderOption) error {
-	fp, err := os.Open(file)
+// Decode method.
+func Decode(name string, encoded []byte, v interface{}, opts ...DecoderOption) error {
+	d, err := NewDecoder(name, bytes.NewBuffer(encoded), opts...)
 	if err != nil {
 		return err
 	}
-
-	r := bufio.NewReader(fp)
-
-	if err := NewDecoder(encoding, r, options...).Decode(value); err != nil {
-		return err
-	}
-
-	return fp.Close()
+	return d.Decode(v)
 }
