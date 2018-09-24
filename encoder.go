@@ -8,11 +8,11 @@ import (
 // Encoder interface.
 type Encoder interface {
 	Encode(v interface{}) error
-	SetIndent(indent string)
+	SetIndent(indent string) error
 }
 
 // EncoderOption variadic function.
-type EncoderOption func(Encoder)
+type EncoderOption func(Encoder) error
 
 // NewEncoder variadic constructor.
 func NewEncoder(name string, w io.Writer, opts ...EncoderOption) (Encoder, error) {
@@ -25,8 +25,8 @@ func NewEncoder(name string, w io.Writer, opts ...EncoderOption) (Encoder, error
 
 // WithIndent output setter for JSON.
 func WithIndent(indent string) EncoderOption {
-	return func(e Encoder) {
-		e.SetIndent(indent)
+	return func(e Encoder) error {
+		return e.SetIndent(indent)
 	}
 }
 

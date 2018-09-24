@@ -8,11 +8,11 @@ import (
 // Decoder interface.
 type Decoder interface {
 	Decode(v interface{}) error
-	SetMapString()
+	SetMapString() error
 }
 
 // DecoderOption function.
-type DecoderOption func(Decoder)
+type DecoderOption func(Decoder) error
 
 // NewDecoder variadic constructor.
 func NewDecoder(name string, r io.Reader, opts ...DecoderOption) (Decoder, error) {
@@ -26,8 +26,8 @@ func NewDecoder(name string, r io.Reader, opts ...DecoderOption) (Decoder, error
 // WithMapString convert map[interface{}]interface{} to map[string]interface{}.
 // Suppored by YAML.
 func WithMapString() DecoderOption {
-	return func(d Decoder) {
-		d.SetMapString()
+	return func(d Decoder) error {
+		return d.SetMapString()
 	}
 }
 
