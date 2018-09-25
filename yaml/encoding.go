@@ -22,6 +22,10 @@ type yamlDecoder struct {
 	mapString bool
 }
 
+func (e *yamlEncoding) NewEncoding() encoding.Encoding {
+	return &yamlEncoding{}
+}
+
 func (e *yamlEncoding) SetIndent(indent string) error {
 	return errors.Wrap(encoding.ErrUnsupportedOption, "algorithm yaml")
 }

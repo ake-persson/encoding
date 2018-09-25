@@ -21,6 +21,10 @@ type jsonDecoder struct {
 	decoder *json.Decoder
 }
 
+func (e *jsonEncoding) NewEncoding() encoding.Encoding {
+	return &jsonEncoding{}
+}
+
 func (e *jsonEncoding) SetIndent(indent string) error {
 	e.indent = indent
 	return nil

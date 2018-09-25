@@ -19,6 +19,10 @@ type tomlDecoder struct {
 	decoder io.Reader
 }
 
+func (e *tomlEncoding) NewEncoding() encoding.Encoding {
+	return &tomlEncoding{}
+}
+
 func (e *tomlEncoding) SetIndent(indent string) error {
 	return errors.Wrap(encoding.ErrUnsupportedOption, "algorithm toml")
 }

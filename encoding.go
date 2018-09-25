@@ -10,6 +10,7 @@ var encodings = make(map[string]Encoding)
 
 // Encoding interface.
 type Encoding interface {
+	NewEncoding() Encoding
 	NewEncoder(w io.Writer) (Encoder, error)
 	NewDecoder(r io.Reader) (Decoder, error)
 	Encode(v interface{}) ([]byte, error)
@@ -45,12 +46,13 @@ func Encodings() []string {
 	return l
 }
 
-// GetEncoding constructor.
-func GetEncoding(name string, opts ...Option) (Encoding, error) {
+// NewEncoding variadic constructor.
+func NewEncoding(name string, opts ...Option) (Encoding, error) {
 	e, ok := encodings[name]
 	if !ok {
 		return nil, fmt.Errorf("encoding not registered: %s", name)
 	}
+	e = e.NewEncoding()
 	for _, opt := range opts {
 		if err := opt(e); err != nil {
 			return nil, err

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/mickep76/encoding"
 	_ "github.com/mickep76/encoding/json"
@@ -14,18 +16,26 @@ type Message struct {
 	Name, Text string
 }
 
-type Messages []*Message
+type Messages struct {
+	Messages []*Message
+}
 
 func main() {
+	enc := flag.String("enc", "json", fmt.Sprintf("Encodings: [%s].", strings.Join(encoding.Encodings(), ", ")))
+
+	flag.Parse()
+
 	in := Messages{
-		&Message{Name: "Ed", Text: "Knock knock."},
-		&Message{Name: "Sam", Text: "Who's there?"},
-		&Message{Name: "Ed", Text: "Go fmt."},
-		&Message{Name: "Sam", Text: "Go fmt who?"},
-		&Message{Name: "Ed", Text: "Go fmt yourself!"},
+		Messages: []*Message{
+			&Message{Name: "Ed", Text: "Knock knock."},
+			&Message{Name: "Sam", Text: "Who's there?"},
+			&Message{Name: "Ed", Text: "Go fmt."},
+			&Message{Name: "Sam", Text: "Go fmt who?"},
+			&Message{Name: "Ed", Text: "Go fmt yourself!"},
+		},
 	}
 
-	e, err := encoding.GetEncoding("yaml")
+	e, err := encoding.NewEncoding(*enc)
 
 	b, err := e.Encode(in)
 	if err != nil {
@@ -40,7 +50,7 @@ func main() {
 	}
 
 	fmt.Println("Decoded:")
-	for _, m := range out {
+	for _, m := range out.Messages {
 		fmt.Printf("%s: %s\n", m.Name, m.Text)
 	}
 }
