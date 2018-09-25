@@ -1,12 +1,13 @@
 package main
 
 import (
-	"bufio"
+	"fmt"
 	"log"
-	"os"
 
 	"github.com/mickep76/encoding"
 	_ "github.com/mickep76/encoding/json"
+	_ "github.com/mickep76/encoding/toml"
+	_ "github.com/mickep76/encoding/yaml"
 )
 
 type Message struct {
@@ -16,7 +17,7 @@ type Message struct {
 type Messages []*Message
 
 func main() {
-	msgs := Messages{
+	in := Messages{
 		&Message{Name: "Ed", Text: "Knock knock."},
 		&Message{Name: "Sam", Text: "Who's there?"},
 		&Message{Name: "Ed", Text: "Go fmt."},
@@ -24,18 +25,22 @@ func main() {
 		&Message{Name: "Ed", Text: "Go fmt yourself!"},
 	}
 
-	w := bufio.NewWriter(os.Stdout)
-	enc, err := encoding.NewEncoder("json", w)
+	e, err := encoding.GetEncoding("yaml")
+
+	b, err := e.Encode(in)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, m := range msgs {
-		if err := enc.Encode(m); err != nil {
-			log.Fatal(err)
-		}
-	}
-	if err := w.Flush(); err != nil {
+	fmt.Printf("Encoded:\n%s\n", string(b))
+
+	out := Messages{}
+	if err := e.Decode(b, &out); err != nil {
 		log.Fatal(err)
+	}
+
+	fmt.Println("Decoded:")
+	for _, m := range out {
+		fmt.Printf("%s: %s\n", m.Name, m.Text)
 	}
 }

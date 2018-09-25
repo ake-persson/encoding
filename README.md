@@ -20,6 +20,8 @@ import (
         "log"
 
         "github.com/mickep76/encoding"
+        _ "github.com/mickep76/encoding/json"
+        _ "github.com/mickep76/encoding/toml"
         _ "github.com/mickep76/encoding/yaml"
 )
 
@@ -38,16 +40,21 @@ func main() {
                 &Message{Name: "Ed", Text: "Go fmt yourself!"},
         }
 
-        b, err := encoding.Encode("yaml", in)
+        e, err := encoding.GetEncoding("yaml")
+
+        b, err := e.Encode(in)
         if err != nil {
                 log.Fatal(err)
         }
 
+        fmt.Printf("Encoded:\n%s\n", string(b))
+
         out := Messages{}
-        if err := encoding.Decode("yaml", b, &out); err != nil {
+        if err := e.Decode(b, &out); err != nil {
                 log.Fatal(err)
         }
 
+        fmt.Println("Decoded:")
         for _, m := range out {
                 fmt.Printf("%s: %s\n", m.Name, m.Text)
         }
