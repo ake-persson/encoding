@@ -35,7 +35,11 @@ func (e *jsonEncoding) SetMapString() error {
 }
 
 func (e *jsonEncoding) NewEncoder(w io.Writer) (encoding.Encoder, error) {
-	return &jsonEncoder{encoder: json.NewEncoder(w)}, nil
+	enc := &jsonEncoder{encoder: json.NewEncoder(w)}
+	if e.indent != "" {
+		enc.encoder.SetIndent("", e.indent)
+	}
+	return enc, nil
 }
 
 func (e *jsonEncoding) Encode(v interface{}) ([]byte, error) {
