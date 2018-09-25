@@ -34,8 +34,8 @@ type Messages struct {
 }
 
 func main() {
-        enc := flag.String("enc", "json", fmt.Sprintf("Encodings: [%s].", strings.Join(encoding.Encodings(), ", ")))
-
+        codec := flag.String("codec", "json", fmt.Sprintf("Codecs: [%s].", strings.Join(encoding.Codecs(), ", ")))
+        indent := flag.String("indent", "", "Indent encoding (only supported by JSON codec)")
         flag.Parse()
 
         in := Messages{
@@ -48,17 +48,25 @@ func main() {
                 },
         }
 
-        e, err := encoding.NewEncoding(*enc)
-
-        b, err := e.Encode(in)
+        var opts []encoding.Option
+        if *indent != "" {
+                opts = append(opts, encoding.WithIndent(*indent))
+        }
+        c, err := encoding.NewCodec(*codec, opts...)
         if err != nil {
                 log.Fatal(err)
         }
 
+        b, err := c.Encode(in)
+        if err != nil {
+                log.Fatal(err)
+        }
+
+        fmt.Printf("Codec: %s\n", *codec)
         fmt.Printf("Encoded:\n%s\n", string(b))
 
         out := Messages{}
-        if err := e.Decode(b, &out); err != nil {
+        if err := c.Decode(b, &out); err != nil {
                 log.Fatal(err)
         }
 
