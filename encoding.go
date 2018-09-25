@@ -46,6 +46,15 @@ func Codecs() []string {
 	return l
 }
 
+// Registered is the algorithm registered.
+func Registered(name string) error {
+	_, ok := codecs[name]
+	if !ok {
+		return fmt.Errorf("codec not registered: %s", name)
+	}
+	return nil
+}
+
 // NewCodec variadic constructor.
 func NewCodec(name string, opts ...Option) (Codec, error) {
 	e, ok := codecs[name]
