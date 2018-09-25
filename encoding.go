@@ -6,11 +6,11 @@ import (
 	"io"
 )
 
-var encodings = make(map[string]Encoding)
+var codecs = make(map[string]Codec)
 
-// Encoding interface.
-type Encoding interface {
-	NewEncoding() Encoding
+// Codec interface.
+type Codec interface {
+	NewCodec() Codec
 	NewEncoder(w io.Writer) (Encoder, error)
 	NewDecoder(r io.Reader) (Decoder, error)
 	Encode(v interface{}) ([]byte, error)
@@ -30,29 +30,29 @@ type Decoder interface {
 }
 
 // Option variadic function.
-type Option func(Encoding) error
+type Option func(Codec) error
 
-// Register encoding.
-func Register(name string, encoding Encoding) {
-	encodings[name] = encoding
+// Register codec.
+func Register(name string, codec Codec) {
+	codecs[name] = codec
 }
 
-// Encodings registered.
-func Encodings() []string {
+// Codecs registered.
+func Codecs() []string {
 	l := []string{}
-	for a := range encodings {
+	for a := range codecs {
 		l = append(l, a)
 	}
 	return l
 }
 
-// NewEncoding variadic constructor.
-func NewEncoding(name string, opts ...Option) (Encoding, error) {
-	e, ok := encodings[name]
+// NewCodec variadic constructor.
+func NewCodec(name string, opts ...Option) (Codec, error) {
+	e, ok := codecs[name]
 	if !ok {
-		return nil, fmt.Errorf("encoding not registered: %s", name)
+		return nil, fmt.Errorf("codec not registered: %s", name)
 	}
-	e = e.NewEncoding()
+	e = e.NewCodec()
 	for _, opt := range opts {
 		if err := opt(e); err != nil {
 			return nil, err
@@ -64,38 +64,35 @@ func NewEncoding(name string, opts ...Option) (Encoding, error) {
 // WithIndent indent output.
 // Supported by JSON.
 func WithIndent(indent string) Option {
-	return func(e Encoding) error {
-		return e.SetIndent(indent)
+	return func(c Codec) error {
+		return c.SetIndent(indent)
 	}
 }
 
 // WithMapString convert map[interface{}]interface{} to map[string]interface{}.
 // Suppored by YAML.
 func WithMapString() Option {
-	return func(e Encoding) error {
-		return e.SetMapString()
+	return func(c Codec) error {
+		return c.SetMapString()
 	}
 }
 
 // Encode method.
-func Encode(e Encoding, v interface{}) ([]byte, error) {
+func Encode(c Codec, v interface{}) ([]byte, error) {
 	var buf bytes.Buffer
-
-	enc, err := e.NewEncoder(&buf)
+	e, err := c.NewEncoder(&buf)
 	if err != nil {
 		return nil, err
 	}
-
-	if err := enc.Encode(v); err != nil {
+	if err := e.Encode(v); err != nil {
 		return nil, err
 	}
-
 	return buf.Bytes(), nil
 }
 
 // Decode method.
-func Decode(e Encoding, encoded []byte, v interface{}) error {
-	d, err := e.NewDecoder(bytes.NewBuffer(encoded))
+func Decode(c Codec, encoded []byte, v interface{}) error {
+	d, err := c.NewDecoder(bytes.NewBuffer(encoded))
 	if err != nil {
 		return err
 	}

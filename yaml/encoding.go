@@ -9,7 +9,7 @@ import (
 	"github.com/mickep76/encoding"
 )
 
-type yamlEncoding struct {
+type yamlCodec struct {
 	mapString bool
 }
 
@@ -22,37 +22,37 @@ type yamlDecoder struct {
 	mapString bool
 }
 
-func (e *yamlEncoding) NewEncoding() encoding.Encoding {
-	return &yamlEncoding{}
+func (c *yamlCodec) NewCodec() encoding.Codec {
+	return &yamlCodec{}
 }
 
-func (e *yamlEncoding) SetIndent(indent string) error {
-	return errors.Wrap(encoding.ErrUnsupportedOption, "algorithm yaml")
+func (c *yamlCodec) SetIndent(indent string) error {
+	return errors.Wrap(encoding.ErrUnsupportedOption, "codec yaml")
 }
 
-func (e *yamlEncoding) SetMapString() error {
-	e.mapString = true
+func (c *yamlCodec) SetMapString() error {
+	c.mapString = true
 	return nil
 }
 
-func (e *yamlEncoding) NewEncoder(w io.Writer) (encoding.Encoder, error) {
+func (c *yamlCodec) NewEncoder(w io.Writer) (encoding.Encoder, error) {
 	return &yamlEncoder{encoder: yaml.NewEncoder(w)}, nil
 }
 
-func (e *yamlEncoding) Encode(v interface{}) ([]byte, error) {
-	return encoding.Encode(e, v)
+func (c *yamlCodec) Encode(v interface{}) ([]byte, error) {
+	return encoding.Encode(c, v)
 }
 
 func (e *yamlEncoder) Encode(v interface{}) error {
 	return e.encoder.Encode(v)
 }
 
-func (e *yamlEncoding) NewDecoder(r io.Reader) (encoding.Decoder, error) {
+func (c *yamlCodec) NewDecoder(r io.Reader) (encoding.Decoder, error) {
 	return &yamlDecoder{decoder: yaml.NewDecoder(r)}, nil
 }
 
-func (e *yamlEncoding) Decode(b []byte, v interface{}) error {
-	return encoding.Decode(e, b, v)
+func (c *yamlCodec) Decode(b []byte, v interface{}) error {
+	return encoding.Decode(c, b, v)
 }
 
 func (d *yamlDecoder) Decode(v interface{}) error {
@@ -70,5 +70,5 @@ func (d *yamlDecoder) Decode(v interface{}) error {
 }
 
 func init() {
-	encoding.Register("yaml", &yamlEncoding{})
+	encoding.Register("yaml", &yamlCodec{})
 }

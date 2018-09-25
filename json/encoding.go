@@ -9,7 +9,7 @@ import (
 	"github.com/mickep76/encoding"
 )
 
-type jsonEncoding struct {
+type jsonCodec struct {
 	indent string
 }
 
@@ -21,41 +21,41 @@ type jsonDecoder struct {
 	decoder *json.Decoder
 }
 
-func (e *jsonEncoding) NewEncoding() encoding.Encoding {
-	return &jsonEncoding{}
+func (c *jsonCodec) NewCodec() encoding.Codec {
+	return &jsonCodec{}
 }
 
-func (e *jsonEncoding) SetIndent(indent string) error {
-	e.indent = indent
+func (c *jsonCodec) SetIndent(indent string) error {
+	c.indent = indent
 	return nil
 }
 
-func (e *jsonEncoding) SetMapString() error {
-	return errors.Wrap(encoding.ErrUnsupportedOption, "algorithm gzip")
+func (c *jsonCodec) SetMapString() error {
+	return errors.Wrap(encoding.ErrUnsupportedOption, "codec json")
 }
 
-func (e *jsonEncoding) NewEncoder(w io.Writer) (encoding.Encoder, error) {
-	enc := &jsonEncoder{encoder: json.NewEncoder(w)}
-	if e.indent != "" {
-		enc.encoder.SetIndent("", e.indent)
+func (c *jsonCodec) NewEncoder(w io.Writer) (encoding.Encoder, error) {
+	e := &jsonEncoder{encoder: json.NewEncoder(w)}
+	if c.indent != "" {
+		e.encoder.SetIndent("", c.indent)
 	}
-	return enc, nil
+	return e, nil
 }
 
-func (e *jsonEncoding) Encode(v interface{}) ([]byte, error) {
-	return encoding.Encode(e, v)
+func (c *jsonCodec) Encode(v interface{}) ([]byte, error) {
+	return encoding.Encode(c, v)
 }
 
 func (e *jsonEncoder) Encode(v interface{}) error {
 	return e.encoder.Encode(v)
 }
 
-func (e *jsonEncoding) NewDecoder(r io.Reader) (encoding.Decoder, error) {
+func (c *jsonCodec) NewDecoder(r io.Reader) (encoding.Decoder, error) {
 	return &jsonDecoder{decoder: json.NewDecoder(r)}, nil
 }
 
-func (e *jsonEncoding) Decode(b []byte, v interface{}) error {
-	return encoding.Decode(e, b, v)
+func (c *jsonCodec) Decode(b []byte, v interface{}) error {
+	return encoding.Decode(c, b, v)
 }
 
 func (d *jsonDecoder) Decode(v interface{}) error {
@@ -63,5 +63,5 @@ func (d *jsonDecoder) Decode(v interface{}) error {
 }
 
 func init() {
-	encoding.Register("json", &jsonEncoding{})
+	encoding.Register("json", &jsonCodec{})
 }

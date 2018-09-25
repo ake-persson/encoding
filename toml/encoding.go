@@ -9,7 +9,7 @@ import (
 	"github.com/mickep76/encoding"
 )
 
-type tomlEncoding struct{}
+type tomlCodec struct{}
 
 type tomlEncoder struct {
 	encoder *toml.Encoder
@@ -19,36 +19,36 @@ type tomlDecoder struct {
 	decoder io.Reader
 }
 
-func (e *tomlEncoding) NewEncoding() encoding.Encoding {
-	return &tomlEncoding{}
+func (c *tomlCodec) NewCodec() encoding.Codec {
+	return &tomlCodec{}
 }
 
-func (e *tomlEncoding) SetIndent(indent string) error {
-	return errors.Wrap(encoding.ErrUnsupportedOption, "algorithm toml")
+func (c *tomlCodec) SetIndent(indent string) error {
+	return errors.Wrap(encoding.ErrUnsupportedOption, "codec toml")
 }
 
-func (e *tomlEncoding) SetMapString() error {
-	return errors.Wrap(encoding.ErrUnsupportedOption, "algorithm toml")
+func (c *tomlCodec) SetMapString() error {
+	return errors.Wrap(encoding.ErrUnsupportedOption, "codec toml")
 }
 
-func (e *tomlEncoding) NewEncoder(w io.Writer) (encoding.Encoder, error) {
+func (c *tomlCodec) NewEncoder(w io.Writer) (encoding.Encoder, error) {
 	return &tomlEncoder{encoder: toml.NewEncoder(w)}, nil
 }
 
-func (e *tomlEncoding) Encode(v interface{}) ([]byte, error) {
-	return encoding.Encode(e, v)
+func (c *tomlCodec) Encode(v interface{}) ([]byte, error) {
+	return encoding.Encode(c, v)
 }
 
-func (e *tomlEncoder) Encode(value interface{}) error {
-	return e.encoder.Encode(value)
+func (e *tomlEncoder) Encode(v interface{}) error {
+	return e.encoder.Encode(v)
 }
 
-func (e *tomlEncoding) NewDecoder(r io.Reader) (encoding.Decoder, error) {
+func (c *tomlCodec) NewDecoder(r io.Reader) (encoding.Decoder, error) {
 	return &tomlDecoder{decoder: r}, nil
 }
 
-func (e *tomlEncoding) Decode(b []byte, v interface{}) error {
-	return encoding.Decode(e, b, v)
+func (c *tomlCodec) Decode(b []byte, v interface{}) error {
+	return encoding.Decode(c, b, v)
 }
 
 func (d *tomlDecoder) Decode(v interface{}) error {
@@ -57,5 +57,5 @@ func (d *tomlDecoder) Decode(v interface{}) error {
 }
 
 func init() {
-	encoding.Register("toml", &tomlEncoding{})
+	encoding.Register("toml", &tomlCodec{})
 }
