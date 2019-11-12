@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/mickep76/encoding.svg?branch=master)](https://travis-ci.org/mickep76/encoding)
 [![Go Report Card](https://goreportcard.com/badge/github.com/mickep76/encoding)](https://goreportcard.com/report/github.com/mickep76/encoding)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/mickep76/mlfmt/blob/master/LICENSE)
+[![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#text-processing)
 
 # encoding
 
